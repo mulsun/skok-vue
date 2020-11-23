@@ -1,0 +1,4 @@
+RewriteEngine On
+
+RewriteCond %{REQUEST_URI} !^/dist/
+RewriteRule ^(.*)$ /public/$1 [L,R=301]

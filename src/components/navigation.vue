@@ -62,8 +62,7 @@ nav {
   }
 
   @media (max-width: 991px) {
-    padding-top: var(--mobile-padding);
-    padding-left: var(--mobile-padding);
+    padding: var(--mobile-padding) 0 0 var(--mobile-padding);
 
     & .menu,
     & .social {

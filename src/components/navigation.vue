@@ -46,8 +46,8 @@ export default {
   methods: {
     menuOpen() {
       if(window.innerWidth < 992)
-        this.isOpen = !this.isOpen;
-        document.getElementsByTagName('body')[0].style = this.isOpen ? 'overflow: hidden' : '';
+        this.isOpen = !this.isOpen
+        document.getElementsByTagName('body')[0].style = this.isOpen ? 'overflow: hidden' : ''
     }
   }
 }

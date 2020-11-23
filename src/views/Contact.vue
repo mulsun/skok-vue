@@ -52,7 +52,6 @@
 <style lang="postcss">
 .contact {
   display: grid;
-  /* grid-template-columns: repeat(4, 1fr); */
   font-size: 13px;
   line-height: 1.5;
   letter-spacing: 0.5px;

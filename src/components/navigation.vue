@@ -47,7 +47,7 @@ export default {
     menuOpen() {
       if(window.innerWidth < 992)
         this.isOpen = !this.isOpen
-        document.getElementsByTagName('body')[0].style = this.isOpen ? 'overflow: hidden' : ''
+        document.getElementsByTagName('body')[0].style = this.isOpen ? 'overflow:hidden' : ''
     }
   }
 }

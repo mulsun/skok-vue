@@ -14,7 +14,7 @@
 		>Fb</a></li>
 		<li><a
 			target="blank"
-			href="mailto:hello@skokfilm.com"
+			href="mailto:hello@skokfilm.com?subject=Hello! 👋"
 			class="msh"
 		><span class="at">@</span><span class="hello">hello@skokfilm.com</span></a></li>
 	</ul>
@@ -49,12 +49,24 @@ export default {
   }
 
   & .msh {
-    &:not(:hover) .hello {
-      display: none;
+    @media(min-width: 421px) {
+      &:not(:hover) .hello {
+        display: none;
+      }
+
+      &:hover .at {
+        display: none;
+      }
     }
 
-    &:hover .at {
-      display: none;
+    @media(max-width: 420px) {
+      & .hello {
+        display: none;
+      }
+
+      & .at {
+        display: inline-flex;
+      }
     }
   }
 }

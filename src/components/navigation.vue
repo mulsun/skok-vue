@@ -47,7 +47,7 @@ export default {
     menuOpen() {
       if(window.innerWidth < 992)
         this.isOpen = !this.isOpen
-        document.getElementsByTagName('body')[0].style = this.isOpen ? 'overflow:hidden' : ''
+        document.getElementsByTagName('body')[0].classList = this.isOpen ? 'mobile-overflow-hidden' : ''
     }
   }
 }
@@ -59,30 +59,31 @@ nav {
 
   & .social {
     display: none;
+    position: relative;
+    z-index: 9;
+    margin: 0 0 0 -20px;
+    font-size: 1rem;
   }
 
   @media (max-width: 991px) {
     padding: var(--mobile-padding) 0 0 var(--mobile-padding);
 
-    & .menu,
     & .social {
-      position: fixed;
       display: flex;
-      transform: translateX(370%);
-      transition: transform ease-in 750ms;
     }
 
-    & .social {
-      left: 20px;
-      bottom: 80px;
-      z-index: 10;
-      font-size: 1rem;
+    & .menu {
+      position: fixed;
+      display: flex;
+      transform: translateX(100%);
+      transition: transform ease-out 175ms;
     }
 
     &.is-open {
-      & .menu,
-      & .social {
+      & .menu {
         transform: translateX(0);
+        transition-timing-function: ease-in;
+        transition-duration: 350ms;
       }
 
     & .hamburger {
@@ -104,6 +105,7 @@ nav {
     margin: 0;
     border: 0;
     z-index: 9;
+    cursor: pointer;
 
     @media (min-width: 992px) {
       display: none;
@@ -113,7 +115,6 @@ nav {
   & .menu {
     display: flex;
     align-items: center;
-    margin-right: -10px;
     font-size: 14px;
 
     @media (max-width: 991px) {

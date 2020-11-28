@@ -19,9 +19,10 @@ export default {
 .logo-header {
   flex: 1;
   margin: 0;
+  line-height: 0;
 
   & a {
-    display: flex;
+    display: inline-flex;
     height: 48px;
 
     & img {

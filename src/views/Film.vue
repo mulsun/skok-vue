@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <h2 :class="isHome ? 'sr-only' : ''" class="page-title">{{ title }}</h2>
+    <h2 :class="isHome ? 'sr-only' : ''" class="page-title">{{ pageTitle }}</h2>
     <div class="isLoading" v-if="isLoading">
       <div class="dot-pulse"></div>
       <span aria-live="polite" aria-busy="true" class="sr-only">Loading ...</span>
@@ -13,8 +13,8 @@
         id="video"
       >
         <router-link :to="{ 
-          name: routeName, 
-          params: { vid: video.video_id, slug: slugify(video.title), title: video.title, directorSlug: slugify(title) }}
+          name: videoRouteName, 
+          params: { vid: video.video_id, slug: slugify(video.title), title: video.title, directorSlug: slugify(pageTitle) }}
         ">
           <figure>
             <img
@@ -34,10 +34,9 @@
     </div>
   </div>
 </template>
-
 <script>
-  import { ref, inject, onMounted } from 'vue'
-  import { useRouter } from 'vue-router'
+  import { ref, inject, onMounted, watch } from 'vue'
+  import { useRoute, useRouter } from 'vue-router'
 
   export default {
     props: {
@@ -51,21 +50,23 @@
       }
     },
     setup(props) {
+      const route = useRoute()
       const router = useRouter()
-      const route = router.currentRoute.value
       const slugify = inject('slugify')
       const films = inject('films')
       const isLoading = ref(true)
       const fetchedVideos = ref(null)
-      const currentDirector = Object.keys(films.director).find(e => slugify(e) === route.params.slug)
-      const title = ref(route.meta.title ? route.meta.title : currentDirector)
-      const routeName = route.name === 'Director' ? 'Director Video' : 'Video'
       const isHome = props.source === 'home'
-      const dataSource = currentDirector ? films.director[currentDirector] : isHome ? films.film.slice(0, 9) : films[route.name.toLowerCase()]
+      const currentDirector = Object.keys(films.director).find(e => slugify(e) === route.params.slug)
+      const dataArray = ref(currentDirector ? films.director[currentDirector] : (isHome ? films.film.slice(0, 9) : films[route.name.toLowerCase()]))
+      const pageTitle = ref(route.meta.title ? route.meta.title : currentDirector)
+      const videoRouteName = route.name === 'Director' ? 'Director Video' : 'Video'
+      
       async function fetchData() {
         isLoading.value = true
-
-        const promises = dataSource.map((url) =>
+        // if(['Home', 'Film', 'Interactive', 'Animation', 'Director'].indexOf(route.name) === -1) return false
+        // dataArray.value = currentDirector ? films.director[currentDirector] : (isHome ? films.film.slice(0, 9) : films[route.name.toLowerCase()])
+        const promises = dataArray.value.map((url) =>
           fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/${url}&width=${isHome ? '1280' : '640'}`)
           .then(res => res.json())
           .then(res => {
@@ -80,8 +81,15 @@
         })
       }
 
+      watch(
+          () => route.name,
+          () => {
+          // pageTitle.value = route.meta.title ? route.meta.title : currentDirector
+          // fetchData()
+      })
+
       router.afterEach(() => {
-          title.value = route.meta.title ? route.meta.title : currentDirector
+          pageTitle.value = route.meta.title ? route.meta.title : currentDirector
           fetchData()
       });
 
@@ -91,11 +99,11 @@
 
       return {
         fetchedVideos,
+        videoRouteName,
         slugify,
         isLoading,
-        title,
         isHome,
-        routeName
+        pageTitle,
       }
     }
   }

@@ -44,7 +44,7 @@ import Player from '@vimeo/player';
       }
 
       onMounted(async () => {
-        console.log(route.name)
+        if(['Video', 'Director Video'].indexOf(route.name) === -1) return false
         await fetchData()
         const filtered = filterObj(await fetchedVideos.value, route.params.slug, 'slug')[0]
         vimeoId.value = filtered.video_id
@@ -52,6 +52,7 @@ import Player from '@vimeo/player';
         const el = document.getElementById("vimeoContainer")
         el.setAttribute('data-vimeo-id', vimeoId.value)
         new Player(el)
+        console.log(route)
       })
 
 			return {

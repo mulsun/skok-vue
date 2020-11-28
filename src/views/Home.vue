@@ -63,6 +63,7 @@
 
  &:before,
  &:after {
+  transition: border-width ease-in 125ms;
   content: "";
   display: block;
   box-sizing: border-box;

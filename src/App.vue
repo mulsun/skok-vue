@@ -53,6 +53,7 @@ export default {
     });
   },
   methods: {
+    /*
     beforeLeave(element) {
       this.prevHeight = getComputedStyle(element).height;
     },
@@ -68,6 +69,7 @@ export default {
     afterEnter(element) {
       element.style.height = 'auto';
     },
+    */
   },
 }
 </script>
@@ -142,19 +144,25 @@ a {
   border: 0;
 }
 
+@media(max-width: 991px) {
+  .mobile-overflow-hidden {
+    overflow: hidden;
+  }
+}
+
 .content {
   @media (max-width: 991px) {
-    padding: var(--mobile-padding);
+    padding: 0 var(--mobile-padding);
+    height: auto !important;
   }
-  @media (min-width: 575px) {
-    &.content-small {
-      max-width: 30vw;
-    }
 
-    & p {
-      color: rgba(255, 255, 255, 0.75);
-      line-height: 1.5;
-    }
+  &.content-small {
+    max-width: 420px;
+  }
+
+  & p {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.5;
   }
 }
 
@@ -247,10 +255,6 @@ a {
   }
 }
 
-ul {
-  cursor: pointer;
-}
-
 .page-title {
   margin-top: 0;
 }
@@ -263,6 +267,10 @@ ul {
   transition-property: height, opacity, transform;
   transition-timing-function: cubic-bezier(0.55, 0, 0.1, 1);
   overflow: hidden;
+
+  & .director-image {
+    display: none;
+  }
 }
 
 .slide-left-enter,

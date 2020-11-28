@@ -13,7 +13,7 @@
           {{director}}
           <img
             class="director-image"
-            src="images/directors/martins.jpg"
+            :src="`images/directors/${slugify(director).split('-').pop()}.jpg`"
           >
         </router-link>
       </li>
@@ -42,6 +42,7 @@ export default {
   grid-template-columns: 1fr 1fr;
   max-width: 1280px;
   width: 100%;
+  overflow: hidden;
 
   @media (max-width: 991px) {
     grid-template-columns: 1fr;
@@ -57,15 +58,30 @@ export default {
     }
 
     & a {
+      opacity: .5;
       &:hover,
       &:focus {
-        color: rgba(255, 255, 255, 0.5);
+        text-decoration: underline;
+        opacity: 1;
+
+        & .director-image {
+          opacity: .45;
+        }
       }
     }
   }
 
-  & img {
-    display: none;
+  & .director-image {
+    pointer-events: none;
+    position: absolute;
+    width: 100%;
+    top: 127px;
+    left: 0;
+    height: 70vh;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity ease-in 125ms;
   }
 }
 </style>

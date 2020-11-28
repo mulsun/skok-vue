@@ -15,6 +15,7 @@ const routes = [{
 		name: "Home",
 		component: Home,
 		meta: {
+			title: 'Latest Film Productions',
 			transitionName: 'slide',
 		}
 	},

@@ -17,6 +17,9 @@ export default {
 </script>
 <style lang="postcss">
 .logo-header {
+  flex: 1;
+  margin: 0;
+
   & a {
     display: flex;
     height: 48px;

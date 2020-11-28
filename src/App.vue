@@ -180,10 +180,49 @@ a {
   }
 }
 
+.grid-1 {
+  & .title {
+    display: block;
+    font-size: clamp(20px, 3.5vw, 48px);;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+
+  & .film {
+    @media (min-width: 992px) {
+      min-height: 360px;
+    }
+  }
+
+  & .description {
+    display: flex;
+  }
+
+  & .details {
+    display: block;
+    position: relative;
+    z-index: 1;
+    max-width: 480px;
+    background-color: #000;
+    margin-top: -40px;
+    padding: var(--mobile-padding) var(--mobile-padding) var(--mobile-padding) 0;
+  }
+
+  & .thumbnail {
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
 .grid-3 {
   display: grid;
   grid-template-columns: repeat( auto-fit, minmax(300px, 1fr));
   grid-gap: 40px;
+
+  & .description {
+    display: none;
+  }
 
   & .film,
   & .thumbnail {
@@ -240,29 +279,6 @@ ul {
 
 .d-inline-block {
   display: inline-block;
-}
-
-/* https://css.gg/chevron-left */
-.gg-chevron-left {
-  box-sizing: border-box;
-  position: relative;
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-
-  &:after {
-    content: '';
-    display: block;
-    box-sizing: border-box;
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    border-bottom: 2px solid;
-    border-left: 2px solid;
-    transform: rotate(45deg);
-    left: 6px;
-    top: 6px;
-  }
 }
 
 .isLoading {

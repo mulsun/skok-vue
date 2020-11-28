@@ -1,23 +1,23 @@
 <template>
-	<div class="social">
-		<a
+	<ul class="social">
+		<li><a
 			target="blank"
 			href="http://vimeo.com/skokfilm"
-		>Vimeo</a>
-		<a
+		>Vimeo</a></li>
+		<li><a
 			target="blank"
 			href="https://www.instagram.com/skokfilm/"
-		>IG</a>
-		<a
+		>IG</a></li>
+		<li><a
 			target="blank"
 			href="https://www.facebook.com/skokfilm/"
-		>Fb</a>
-		<a
+		>Fb</a></li>
+		<li><a
 			target="blank"
 			href="mailto:hello@skokfilm.com"
 			class="msh"
-		><span class="at">@</span><span class="hello">hello@skokfilm.com</span></a>
-	</div>
+		><span class="at">@</span><span class="hello">hello@skokfilm.com</span></a></li>
+	</ul>
 </template>
 <script>
 export default {
@@ -25,15 +25,17 @@ export default {
 </script>
 <style lang="postcss">
 .social {
+  list-style: none;
+  padding: 0;
   display: flex;
   font-weight: 900;
-  margin-top: 60px;
+  margin: 60px 0 0;
 
   @media (max-width: 991px) {
     padding: var(--mobile-padding);
   }
 
-  & a {
+  & li a {
     padding: 10px;
     background-color: rgba(255, 255, 255, 0.25);
     color: #000;

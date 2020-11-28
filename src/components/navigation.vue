@@ -24,8 +24,8 @@
       <li>
         <router-link to="/contact">Contact</router-link>
       </li>
+      <li><Footer /></li>
     </ul>
-    <Footer />
   </nav>
 </template>
 <script>
@@ -67,9 +67,16 @@ nav {
     & .menu,
     & .social {
       position: fixed;
-      display: block;
-      transform: translateX(150%);
-      transition: transform ease-in 250ms;
+      display: flex;
+      transform: translateX(370%);
+      transition: transform ease-in 750ms;
+    }
+
+    & .social {
+      left: 20px;
+      bottom: 80px;
+      z-index: 10;
+      font-size: 1rem;
     }
 
     &.is-open {
@@ -78,22 +85,10 @@ nav {
         transform: translateX(0);
       }
 
-      & .social {
-        position: fixed;
-        left: 20px;
-        bottom: 20px;
-        z-index: 10;
-      }
-
     & .hamburger {
         position: fixed;
       }
     }
-  }
-
-  & h1 {
-    margin-right: auto;
-    margin-bottom: 0;
   }
 
   & .hamburger {
@@ -131,10 +126,10 @@ nav {
       min-height: 100vh;
       padding: var(--mobile-padding);
       z-index: 8;
-      font-size: 8vw;
+      font-size: clamp(24px, 8vw, 48px);
     }
 
-    & a {
+    & > li > a {
       text-transform: uppercase;
       font-weight: 900;
       letter-spacing: 1px;

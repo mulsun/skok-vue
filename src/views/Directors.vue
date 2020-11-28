@@ -50,6 +50,7 @@ export default {
   & li {
     text-transform: uppercase;
     font-size: 36px;
+    font-weight: 900;
 
     @media (max-width: 575px) {
       font-size: 25px;

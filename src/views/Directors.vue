@@ -27,7 +27,7 @@ export default {
   setup() {
     const slugify = inject('slugify')
     const films = inject('films')
-    const directorList = Object.keys(films.directors)
+    const directorList = Object.keys(films.director)
 
     return { 
       directorList, 

@@ -158,10 +158,6 @@ a {
   }
 }
 
-.isLoading {
-  min-height: 100vh;
-}
-
 /* Common Grid */
 .grid {
   display: grid;
@@ -268,4 +264,88 @@ ul {
     top: 6px;
   }
 }
+
+.isLoading {
+  min-height: 100vh;
+}
+
+/* https://codepen.io/nzbin/pen/GGrXbp */
+.dot-pulse {
+  --dot-color: #fff;
+  margin-left: 20px;
+  position: relative;
+  left: -9999px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: var(--dot-color);
+  color: var(--dot-color);
+  box-shadow: 9999px 0 0 -5px var(--dot-color);
+  animation: dotPulse 1.5s infinite linear;
+  animation-delay: .25s;
+}
+
+.dot-pulse::before, .dot-pulse::after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: var(--dot-color);
+  color: var(--dot-color);
+}
+
+.dot-pulse::before {
+  box-shadow: 9984px 0 0 -5px var(--dot-color);
+  animation: dotPulseBefore 1.5s infinite linear;
+  animation-delay: 0s;
+}
+
+.dot-pulse::after {
+  box-shadow: 10014px 0 0 -5px var(--dot-color);
+  animation: dotPulseAfter 1.5s infinite linear;
+  animation-delay: .5s;
+}
+
+@keyframes dotPulseBefore {
+  0% {
+    box-shadow: 9984px 0 0 -5px var(--dot-color);
+  }
+  30% {
+    box-shadow: 9984px 0 0 2px var(--dot-color);
+  }
+  60%,
+  100% {
+    box-shadow: 9984px 0 0 -5px var(--dot-color);
+  }
+}
+
+@keyframes dotPulse {
+  0% {
+    box-shadow: 9999px 0 0 -5px var(--dot-color);
+  }
+  30% {
+    box-shadow: 9999px 0 0 2px var(--dot-color);
+  }
+  60%,
+  100% {
+    box-shadow: 9999px 0 0 -5px var(--dot-color);
+  }
+}
+
+@keyframes dotPulseAfter {
+  0% {
+    box-shadow: 10014px 0 0 -5px var(--dot-color);
+  }
+  30% {
+    box-shadow: 10014px 0 0 2px var(--dot-color);
+  }
+  60%,
+  100% {
+    box-shadow: 10014px 0 0 -5px var(--dot-color);
+  }
+}
+
 </style>

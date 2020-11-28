@@ -47,7 +47,7 @@
       const fetchedVideos = ref(null)
 
       onBeforeMount(async () => {
-        const promises = films.all.slice(0, 9).map(url =>
+        const promises = films.film.slice(0, 9).map(url =>
           fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/${url}&width=1280`)
           .then(res => res.json())
           .then(res => {

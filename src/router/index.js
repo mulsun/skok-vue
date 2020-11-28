@@ -16,7 +16,6 @@ const routes = [{
 		component: Home,
 		meta: {
 			transitionName: 'slide',
-			dataSource: "all",
 		}
 	},
 	{
@@ -25,7 +24,7 @@ const routes = [{
 		component: About,
 		meta: {
 			title: 'About',
-			transitionName: 'slide'
+			transitionName: 'slide',
 		}
 	},
 	{
@@ -35,7 +34,6 @@ const routes = [{
 		meta: {
 			title: 'Film',
 			transitionName: 'slide',
-			dataSource: "all",
 		}
 	},
 	{
@@ -44,7 +42,7 @@ const routes = [{
 		component: Jobs,
 		meta: {
 			title: 'Jobs',
-			transitionName: 'slide'
+			transitionName: 'slide',
 		}
 	},
 	{
@@ -53,7 +51,7 @@ const routes = [{
 		component: Contact,
 		meta: {
 			title: 'Contact',
-			transitionName: 'slide'
+			transitionName: 'slide',
 		}
 	},
 	{
@@ -63,7 +61,6 @@ const routes = [{
 		meta: {
 			title: 'Directors',
 			transitionName: 'slide',
-			dataSource: "directors",
 		}
 	},
 	{
@@ -73,7 +70,6 @@ const routes = [{
 		meta: {
 			title: 'Animation',
 			transitionName: 'slide',
-			dataSource: "animation",
 		}
 	},
 	{
@@ -82,7 +78,6 @@ const routes = [{
 		component: Film,
 		meta: {
 			title: 'Interactive',
-			dataSource: "interactive",
 		}
 	},
 	{
@@ -91,7 +86,6 @@ const routes = [{
 		component: Video,
 		meta: {
 			transitionName: 'slide',
-			dataSource: "all",
 		}
 	},
 	{
@@ -100,7 +94,6 @@ const routes = [{
 		component: Film,
 		meta: {
 			transitionName: 'slide',
-			dataSource: "directors",
 		}
 	},
 	{
@@ -109,7 +102,6 @@ const routes = [{
 		component: Video,
 		meta: {
 			transitionName: 'slide',
-			dataSource: "directors",
 		}
 	},
 ];

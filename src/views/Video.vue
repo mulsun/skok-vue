@@ -17,8 +17,8 @@ import Player from '@vimeo/player';
       const isLoading = ref(true)
       const slugify = inject('slugify')
       const fetchedVideos = ref(null)
-      const currentDirector = Object.keys(films.directors).find(e => slugify(e) === route.params.directorSlug)
-      const pageData = route.name === 'Video' ? films.all : films.directors[currentDirector]
+      const currentDirector = Object.keys(films.director).find(e => slugify(e) === route.params.directorSlug)
+      const pageData = route.name === 'Video' ? films.film.concat(films.animation.concat(films.interactive)) : films.director[currentDirector]
       const title = ref(null)
 
       function filterObj(array, value, key) {
@@ -44,6 +44,7 @@ import Player from '@vimeo/player';
       }
 
       onMounted(async () => {
+        console.log(route.name)
         await fetchData()
         const filtered = filterObj(await fetchedVideos.value, route.params.slug, 'slug')[0]
         vimeoId.value = filtered.video_id

@@ -1,24 +1,28 @@
 <template>
   <div class="content">
     <h2 class="page-title">{{ title }}</h2>
-    <div id="vimeoContainer" />
+    <div class="vimeoContainer">
+      <iframe
+        ref="iframe"
+        frameborder="0"
+        allowFullScreen
+      ></iframe>
+    </div>
   </div>
 </template>
 <script>
-import { onMounted, ref, inject } from 'vue'
-import { useRoute } from 'vue-router';
-import Player from '@vimeo/player';
+import { onBeforeMount, ref, inject } from 'vue'
+import { useRoute, useRouter } from 'vue-router';
+// import Player from '@vimeo/player';
 
   export default {
 		setup() {
       const route = useRoute()
+      const router = useRouter()
       const films = inject('films')
-      const vimeoId =  ref(null)
-      const isLoading = ref(true)
       const slugify = inject('slugify')
       const fetchedVideos = ref(null)
       const currentDirector = Object.keys(films.director).find(e => slugify(e) === route.params.directorSlug)
-      const pageData = route.name === 'Video' ? films.film.concat(films.animation.concat(films.interactive)) : films.director[currentDirector]
       const title = ref(null)
 
       function filterObj(array, value, key) {
@@ -28,36 +32,17 @@ import Player from '@vimeo/player';
         );
       }
 
-      function fetchData() {
-        const promises = pageData.map(url =>
-          fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/${url}&width=640`)
-          .then(res => res.json())
-          .then(res => {
-            res.slug = slugify(res.title)
-            return res
-          })
-        );
-        fetchedVideos.value = Promise.all(promises).then(results => {
-          isLoading.value = false
-          return results
-        })
-      }
-
-      onMounted(async () => {
+      onBeforeMount(async () => {
         if(['Video', 'Director Video'].indexOf(route.name) === -1) return false
-        await fetchData()
         const filtered = filterObj(await fetchedVideos.value, route.params.slug, 'slug')[0]
-        vimeoId.value = filtered.video_id
         title.value = route.name === 'Video' ? filtered.title : `${filtered.title} - ${currentDirector}`
+        router.push({ params: { title: title.value }})
         const el = document.getElementById("vimeoContainer")
-        el.setAttribute('data-vimeo-id', vimeoId.value)
-        new Player(el)
-        console.log(route)
+        el.setAttribute('src', `https://player.vimeo.com/video/${filtered.id}`)
       })
 
 			return {
         route,
-        vimeoId,
         title
       }
 		}

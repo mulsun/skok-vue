@@ -3,23 +3,21 @@
     <Nav />
     <router-view v-slot="{ Component }">
       <transition
-        :name="transitionName"
+        name="slide-left"
         mode="out-in"
-        @beforeLeave="beforeLeave"
-        @enter="enter"
-        @after-enter="afterEnter"
       >
         <component :is="Component" />
       </transition>
     </router-view>
-  <Footer />
+    <Footer />
   </div>
 </template>
 <script>
+import { watch } from 'vue'
+import { useRoute } from 'vue-router';
+
 import Nav from './components/navigation.vue'
 import Footer from './components/footer.vue'
-
-const DEFAULT_TRANSITION = 'fade';
 
 export default {
   name: 'App',
@@ -27,49 +25,13 @@ export default {
     Nav,
     Footer
   },
-  data() {
-    return {
-      prevHeight: 0,
-      transitionName: DEFAULT_TRANSITION,
-    };
-  },
-  watchEffect: {
-    '$route' (to) {
-      document.title =  to.params.title ? `${to.params.title} | SKOK Film` : (to.meta.title ? `${to.meta.title} | SKOK Film` : 'SKOK Film')
-    }
-  },
-  created() {
-    this.$router.beforeEach((to, from, next) => {
-      let transitionName = to.meta.transitionName || from.meta.transitionName;
-  
-      if (transitionName === 'slide') {
-        const toDepth = to.path.split('/').length;
-        const fromDepth = from.path.split('/').length;
-        transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left';
-      }
-
-      this.transitionName = transitionName || DEFAULT_TRANSITION;
-      next();
-    });
-  },
-  methods: {
-    /*
-    beforeLeave(element) {
-      this.prevHeight = getComputedStyle(element).height;
-    },
-    enter(element) {
-      const { height } = getComputedStyle(element);
-
-      element.style.height = this.prevHeight;
-
-      setTimeout(() => {
-        element.style.height = height;
-      });
-    },
-    afterEnter(element) {
-      element.style.height = 'auto';
-    },
-    */
+  setup() {
+    const route = useRoute()
+    watch(
+        () => route,
+        () => {
+        document.title =  route.params.title ? `${route.params.title} | SKOK Film` : (route.meta.title ? `${route.meta.title} | SKOK Film` : 'SKOK Film')
+    })
   },
 }
 </script>
@@ -144,7 +106,7 @@ a {
   border: 0;
 }
 
-@media(max-width: 991px) {
+@media (max-width: 991px) {
   .mobile-overflow-hidden {
     overflow: hidden;
   }
@@ -168,8 +130,6 @@ a {
 
 /* Common Grid */
 .grid {
-  display: grid;
-
   & figure {
     padding: 0;
     margin: 0;
@@ -189,9 +149,12 @@ a {
 }
 
 .grid-1 {
+  display: flex;
+  flex-direction: column-reverse;
+
   & .title {
     display: block;
-    font-size: clamp(20px, 3.5vw, 48px);;
+    font-size: clamp(20px, 3.5vw, 48px);
     font-weight: 900;
     line-height: 1;
     margin-bottom: 10px;
@@ -225,7 +188,7 @@ a {
 
 .grid-3 {
   display: grid;
-  grid-template-columns: repeat( auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   grid-gap: 40px;
 
   & .description {
@@ -264,7 +227,7 @@ a {
 .slide-right-enter-active,
 .slide-right-leave-active {
   transition-duration: 0.5s;
-  transition-property: height, opacity, transform;
+  transition-property: opacity, transform;
   transition-timing-function: cubic-bezier(0.55, 0, 0.1, 1);
   overflow: hidden;
 
@@ -288,88 +251,4 @@ a {
 .d-inline-block {
   display: inline-block;
 }
-
-.isLoading {
-  min-height: 100vh;
-}
-
-/* https://codepen.io/nzbin/pen/GGrXbp */
-.dot-pulse {
-  --dot-color: #fff;
-  margin-left: 20px;
-  position: relative;
-  left: -9999px;
-  width: 10px;
-  height: 10px;
-  border-radius: 5px;
-  background-color: var(--dot-color);
-  color: var(--dot-color);
-  box-shadow: 9999px 0 0 -5px var(--dot-color);
-  animation: dotPulse 1.5s infinite linear;
-  animation-delay: .25s;
-}
-
-.dot-pulse::before, .dot-pulse::after {
-  content: '';
-  display: inline-block;
-  position: absolute;
-  top: 0;
-  width: 10px;
-  height: 10px;
-  border-radius: 5px;
-  background-color: var(--dot-color);
-  color: var(--dot-color);
-}
-
-.dot-pulse::before {
-  box-shadow: 9984px 0 0 -5px var(--dot-color);
-  animation: dotPulseBefore 1.5s infinite linear;
-  animation-delay: 0s;
-}
-
-.dot-pulse::after {
-  box-shadow: 10014px 0 0 -5px var(--dot-color);
-  animation: dotPulseAfter 1.5s infinite linear;
-  animation-delay: .5s;
-}
-
-@keyframes dotPulseBefore {
-  0% {
-    box-shadow: 9984px 0 0 -5px var(--dot-color);
-  }
-  30% {
-    box-shadow: 9984px 0 0 2px var(--dot-color);
-  }
-  60%,
-  100% {
-    box-shadow: 9984px 0 0 -5px var(--dot-color);
-  }
-}
-
-@keyframes dotPulse {
-  0% {
-    box-shadow: 9999px 0 0 -5px var(--dot-color);
-  }
-  30% {
-    box-shadow: 9999px 0 0 2px var(--dot-color);
-  }
-  60%,
-  100% {
-    box-shadow: 9999px 0 0 -5px var(--dot-color);
-  }
-}
-
-@keyframes dotPulseAfter {
-  0% {
-    box-shadow: 10014px 0 0 -5px var(--dot-color);
-  }
-  30% {
-    box-shadow: 10014px 0 0 2px var(--dot-color);
-  }
-  60%,
-  100% {
-    box-shadow: 10014px 0 0 -5px var(--dot-color);
-  }
-}
-
 </style>

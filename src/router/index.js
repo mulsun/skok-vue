@@ -11,100 +11,81 @@ import Directors from "../views/Directors.vue";
 import Video from "../views/Video.vue";
 
 const routes = [{
-		path: "/",
-		name: "Home",
-		component: Home,
-		meta: {
-			title: 'Latest Film Productions',
-			transitionName: 'slide',
-		}
-	},
-	{
-		path: "/about",
-		name: "About",
-		component: About,
-		meta: {
-			title: 'About',
-			transitionName: 'slide',
-		}
-	},
-	{
-		path: "/film",
-		name: "Film",
-		component: Film,
-		meta: {
-			title: 'Film',
-			transitionName: 'slide',
-		}
-	},
-	{
-		path: "/jobs",
-		name: "Jobs",
-		component: Jobs,
-		meta: {
-			title: 'Jobs',
-			transitionName: 'slide',
-		}
-	},
-	{
-		path: "/contact",
-		name: "Contact",
-		component: Contact,
-		meta: {
-			title: 'Contact',
-			transitionName: 'slide',
-		}
-	},
-	{
-		path: "/directors",
-		name: "Directors",
-		component: Directors,
-		meta: {
-			title: 'Directors',
-			transitionName: 'slide',
-		}
-	},
-	{
-		path: "/animation",
-		name: "Animation",
-		component: Film,
-		meta: {
-			title: 'Animation',
-			transitionName: 'slide',
-		}
-	},
-	{
-		path: "/interactive",
-		name: "Interactive",
-		component: Film,
-		meta: {
-			title: 'Interactive',
-		}
-	},
-	{
-		path: "/film/:slug",
-		name: "Video",
-		component: Video,
-		meta: {
-			transitionName: 'slide',
-		}
-	},
-	{
-		path: "/director/:slug",
-		name: "Director",
-		component: Film,
-		meta: {
-			transitionName: 'slide',
-		}
-	},
-	{
-		path: "/director/:directorSlug/:slug",
-		name: "Director Video",
-		component: Video,
-		meta: {
-			transitionName: 'slide',
-		}
-	},
+	path: "/",
+	name: "Home",
+	component: Home,
+	meta: {
+		title: 'SKOK Film Production',
+	}
+},
+{
+	path: "/about",
+	name: "About",
+	component: About,
+	meta: {
+		title: 'About',
+	}
+},
+{
+	path: "/film",
+	name: "Film",
+	component: Film,
+	meta: {
+		title: 'Film',
+	}
+},
+{
+	path: "/jobs",
+	name: "Jobs",
+	component: Jobs,
+	meta: {
+		title: 'Jobs',
+	}
+},
+{
+	path: "/contact",
+	name: "Contact",
+	component: Contact,
+	meta: {
+		title: 'Contact',
+	}
+},
+{
+	path: "/directors",
+	name: "Directors",
+	component: Directors,
+	meta: {
+		title: 'Directors',
+	}
+},
+{
+	path: "/animation",
+	name: "Animation",
+	component: Film,
+	meta: {
+		title: 'Animation',
+	}
+},
+{
+	path: "/interactive",
+	name: "Interactive",
+	component: Film,
+},
+{
+	path: "/:cat/:slug",
+	name: "Video",
+	component: Video,
+},
+{
+	path: "/director/:slug",
+	name: "Director",
+	component: Film,
+},
+{
+	path: "/director/:directorSlug/:slug",
+	name: "Director Video",
+	component: Video,
+},
 ];
 
 const router = createRouter({

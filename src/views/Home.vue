@@ -1,11 +1,14 @@
 <template>
   <div>
-    <Film source="home" :grid="grid" />
+    <Film :grid="grid" />
     <button
       @click="grid = !grid"
       class="toggle-grid"
     >
-      <span class="gg-display-grid" :class="grid ? 'multi' : 'single'"></span>
+      <span
+        class="gg-display-grid"
+        :class="grid ? 'multi' : 'single'"
+      ></span>
       <span class="sr-only">Change View</span>
     </button>
   </div>
@@ -48,7 +51,7 @@
   box-sizing: border-box;
   position: relative;
   display: block;
-  transform: scale(var(--ggs,1));
+  transform: scale(var(--ggs, 1));
   height: 14px;
   width: 14px;
   border: 2px solid transparent;
@@ -61,23 +64,23 @@
     }
   }
 
- &:before,
- &:after {
-  transition: border-width ease-in 125ms;
-  content: "";
-  display: block;
-  box-sizing: border-box;
-  position: absolute;
-  width: 10px;
-  height: 4px;
-  border-right: 4px solid;
-  border-left: 4px solid;
-  top: 0;
-  left: 0;
- }
+  &:before,
+  &:after {
+    transition: border-width ease-in 125ms;
+    content: '';
+    display: block;
+    box-sizing: border-box;
+    position: absolute;
+    width: 10px;
+    height: 4px;
+    border-right: 4px solid;
+    border-left: 4px solid;
+    top: 0;
+    left: 0;
+  }
 
- &:before {
-   top: 6px;
- }
+  &:before {
+    top: 6px;
+  }
 }
 </style>

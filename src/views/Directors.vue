@@ -1,13 +1,11 @@
 <template>
   <div class="content">
     <h2 class="page-title">Directors</h2>
-    <ul
-      class="dir-grid"
-      lang="tr"
-    >
+    <ul class="dir-grid">
       <li
-        v-for="(director, i) in directorList"
+        v-for="(director, i) in directors"
         :key="i"
+        :lang="/^Fa|Gö|Vu|Me|Or|Ba|Re/.test(director) ? 'tr' : undefined"
       >
         <router-link :to="{ name: 'Director', params: { slug: slugify(director), title: director }}">
           {{director}}
@@ -27,10 +25,10 @@ export default {
   setup() {
     const slugify = inject('slugify')
     const films = inject('films')
-    const directorList = Object.keys(films.director)
+    const directors = Object.keys(films.director)
 
     return { 
-      directorList, 
+      directors, 
       slugify
     }
   }
@@ -58,14 +56,14 @@ export default {
     }
 
     & a {
-      opacity: .5;
+      color: rgba(255, 255, 255, 0.5);
       &:hover,
       &:focus {
         text-decoration: underline;
-        opacity: 1;
+        color: rgba(255, 255, 255, 1);
 
         & .director-image {
-          opacity: .45;
+          opacity: 0.45;
         }
       }
     }

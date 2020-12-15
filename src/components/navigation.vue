@@ -1,8 +1,14 @@
 <template>
   <nav :class="{'is-open': isOpen}">
     <Logo />
-    <button @click="menuOpen" class="hamburger"><span class="sr-only">Toggle Menu</span><span class="gg-menu" /></button>
-    <ul class="menu" @click="menuOpen">
+    <button
+      @click="menuOpen"
+      class="hamburger"
+    ><span class="sr-only">Toggle Menu</span><span class="gg-menu" /></button>
+    <ul
+      class="menu"
+      @click="menuOpen"
+    >
       <li>
         <router-link to="/about">About</router-link>
       </li>
@@ -24,7 +30,9 @@
       <li>
         <router-link to="/contact">Contact</router-link>
       </li>
-      <li><Footer /></li>
+      <li>
+        <Footer />
+      </li>
     </ul>
   </nav>
 </template>
@@ -77,6 +85,7 @@ nav {
       display: flex;
       transform: translateX(100%);
       transition: transform ease-out 175ms;
+      will-change: transform;
     }
 
     &.is-open {
@@ -86,7 +95,7 @@ nav {
         transition-duration: 350ms;
       }
 
-    & .hamburger {
+      & .hamburger {
         position: fixed;
       }
     }
@@ -154,24 +163,24 @@ nav {
   &,
   &::after,
   &::before {
-  box-sizing: border-box;
-  position: relative;
-  display: block;
-  width: 20px;
-  height: 2px;
-  border-radius: 3px;
-  background: currentColor
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    width: 20px;
+    height: 2px;
+    border-radius: 3px;
+    background: currentColor;
   }
 
   &::after,
   &::before {
-  content: "";
-  position: absolute;
-  top: -6px
+    content: '';
+    position: absolute;
+    top: -6px;
   }
 
   &::after {
-  top: 6px
+    top: 6px;
   }
 }
 </style>

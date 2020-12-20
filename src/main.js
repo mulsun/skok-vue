@@ -19,7 +19,7 @@ function slugify(s) {
 		.replace(/-+$/, ''); //trim ending dash
 }
 
-async function fetchData(arr, cat) {
+async function fetchData(arr) {
 	const data = films[arr] ?? films.director[arr];
 	try {
 		// Join and fetch vimeo ids
@@ -28,7 +28,7 @@ async function fetchData(arr, cat) {
 		// Manipulate result
 		Object.values(res.data).forEach((e) => {
 			e.uri = e.uri.split('/').pop()
-			e.pictures.uri = 'https://i.vimeocdn.com/video/' + e.pictures.uri.split('/').pop() + (cat === 'Home' ? '_1920x1080.webp' : '_640x360.webp')
+			e.pictures.uri = 'https://i.vimeocdn.com/video/' + e.pictures.uri.split('/').pop() + (arr === 'home' ? '_1920x1080.webp' : '_640x360.webp')
 			e.slug = slugify(e.name)
 		})
 		return res.data

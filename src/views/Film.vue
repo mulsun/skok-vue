@@ -20,7 +20,7 @@
           name: 'Video',
           params: { 
             vid: video.uri,
-            category: $route.name.toLowerCase(),
+            category: to??$route.name.toLowerCase(),
             title: $route.name,
             slug: slugify(video.name),
             directorSlug: slugify(page.director)??''
@@ -52,6 +52,10 @@
 
   export default {
     props: {
+      to: {
+        type: String,
+        default: null,
+      },
       grid: {
         type: Boolean,
         default: true,

@@ -1,6 +1,9 @@
 <template>
   <div>
-    <Film :grid="grid" />
+    <Film
+      :grid="grid"
+      to="film"
+    />
     <button
       @click="grid = !grid"
       class="toggle-grid"

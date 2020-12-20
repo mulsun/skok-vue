@@ -5,7 +5,7 @@
       <li
         v-for="(director, i) in directors"
         :key="i"
-        :lang="/^Fa|Gö|Vu|Me|Or|Ba|Re/.test(director) ? 'tr' : undefined"
+        :lang="/([öçğışü])|(ay)/i.test(director) ? 'tr' : undefined"
       >
         <router-link :to="{ name: 'Director', params: { slug: slugify(director), title: director }}">
           {{director}}

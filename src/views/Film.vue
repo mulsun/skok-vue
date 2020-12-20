@@ -1,10 +1,11 @@
 <template>
   <div class="content">
     <h2
-      :class="page.isHome ? 'sr-only' : 'sub'"
+      :class="$route.name === 'Home' ? 'sr-only' : 'sub'"
       class="page-title"
-    >{{ page.title??page.director }}</h2>
+    >{{ page.director??page.title }}</h2>
     <div
+      v-if="fetchedVideos"
       class="grid"
       :class="grid ? 'grid-3' : 'grid-1'"
     >
@@ -14,19 +15,22 @@
         class="film"
         id="video"
       >
-        <router-link :to="{ 
-          name: page.videoRoute, 
+        <router-link :to="
+        { 
+          name: 'Video',
           params: { 
-            vid: video.uri, 
-            cat: $route.name === 'home' ? 'film' : $route.name.toLowerCase(), 
-            slug: slugify(video.name), 
-            title: video.name, 
-            directorSlug: slugify(page.title??page.director) }}
+            vid: video.uri,
+            category: $route.name.toLowerCase(),
+            title: $route.name,
+            slug: slugify(video.name),
+            directorSlug: slugify(page.director)??''
+          }
+        }
         ">
           <figure>
             <img
-              :src="`https://i.vimeocdn.com/video/${video.pictures.uri}${page.isHome ? '_1920x1080' : '_640x360'}.webp`"
-              :alt="video.name"
+              :src="video.pictures.uri"
+              alt=""
               class="thumbnail"
             >
           </figure>
@@ -42,16 +46,12 @@
   </div>
 </template>
 <script>
-  import { ref, reactive, inject, onMounted, watch } from 'vue'
+  import { ref, reactive, inject, watchEffect, computed } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
   import { films } from '../films.json'
 
   export default {
     props: {
-      source: {
-        type: String,
-        default: 'film'
-      },
       grid: {
         type: Boolean,
         default: true,
@@ -61,42 +61,27 @@
       const route = useRoute()
       const router = useRouter()
       const slugify = inject('slugify')
-      const fetchData = inject('fetchData')
-      const currentDirector = Object.keys(films.director).find(e => slugify(e) === route.params.slug)
-      const getData = ref(currentDirector ? currentDirector : route.name.toLowerCase())
-      const fetchedVideos = reactive(JSON.parse(sessionStorage.getItem(getData.value)))
-
+      const fetchCurrentCategory = inject('fetchCurrentCategory')
+      const fetchedVideos = ref(null)
       const page = reactive({
-        isHome: route.name === 'Home',
-        director: Object.keys(films.director).find(e => slugify(e) === route.params.slug),
-        title: route.meta.title,
-        videoRoute: route.name === 'Director' ? 'Director Video' : 'Video'
+        title: computed(() => route.name),
+        director: computed(() => Object.keys(films.director).find(e => slugify(e) === route.params.slug)),
       })
+      const filmComponent = Object.keys(films).pop().indexOf(route.name)
 
-      onMounted(async () => {
-        if (sessionStorage.length <= 1) {
-          await fetchData(films)
+      watchEffect(
+        async () => {
+          if(filmComponent) {
+            await fetchCurrentCategory(page.director??route.name.toLowerCase(), fetchedVideos)
+          }
         }
+      )
 
-        router.push({ params: { title: page.title }})
-      })
-
-      watch(
-          () => route.name,
-          () => {
-          // pageTitle.value = route.meta.title ? route.meta.title : currentDirector
-      })
-
-      
-      router.afterEach(() => {
-          page.title = route.meta.title ?? Object.keys(films.director).find(e => slugify(e) === route.params.slug)
-          // console.log('after', route.name, fetchedVideos)
-          console.log(page)
+      router.beforeEach(() => {
       });
-      
-     router.beforeEach(() => {
-       // console.log('before', route.name, fetchedVideos)
-     });
+
+      router.afterEach(() => {
+      });
 
       return {
         fetchedVideos,

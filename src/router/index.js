@@ -14,57 +14,36 @@ const routes = [{
 	path: "/",
 	name: "Home",
 	component: Home,
-	meta: {
-		title: 'SKOK Film Production',
-	}
 },
 {
 	path: "/about",
 	name: "About",
 	component: About,
-	meta: {
-		title: 'About',
-	}
 },
 {
 	path: "/film",
 	name: "Film",
 	component: Film,
-	meta: {
-		title: 'Film',
-	}
 },
 {
 	path: "/jobs",
 	name: "Jobs",
 	component: Jobs,
-	meta: {
-		title: 'Jobs',
-	}
 },
 {
 	path: "/contact",
 	name: "Contact",
 	component: Contact,
-	meta: {
-		title: 'Contact',
-	}
 },
 {
 	path: "/directors",
 	name: "Directors",
 	component: Directors,
-	meta: {
-		title: 'Directors',
-	}
 },
 {
 	path: "/animation",
 	name: "Animation",
 	component: Film,
-	meta: {
-		title: 'Animation',
-	}
 },
 {
 	path: "/interactive",
@@ -72,7 +51,7 @@ const routes = [{
 	component: Film,
 },
 {
-	path: "/:cat/:slug",
+	path: "/:category/:directorSlug?/:slug",
 	name: "Video",
 	component: Video,
 },
@@ -80,11 +59,6 @@ const routes = [{
 	path: "/director/:slug",
 	name: "Director",
 	component: Film,
-},
-{
-	path: "/director/:directorSlug/:slug",
-	name: "Director Video",
-	component: Video,
 },
 ];
 

@@ -20,9 +20,9 @@
     components: {Film},
     data() {
       return {
-        grid: false
+        grid: false,
       }
-    }
+    },
   }
 </script>
 <style lang="postcss" scoped>

@@ -1,49 +1,45 @@
 <template>
   <div class="content">
-    <h2 class="page-title">{{ title }}</h2>
-    <div class="vimeoContainer">
+    <h2 class="page-title">{{ page.title }}</h2>
+    <div id="vimeoContainer">
       <iframe
-        ref="iframe"
         frameborder="0"
         allowFullScreen
+        :src="page.videoURL"
       ></iframe>
     </div>
   </div>
 </template>
 <script>
-import { onBeforeMount, ref, inject } from 'vue'
-import { useRoute, useRouter } from 'vue-router';
+import { ref, reactive, inject, computed, watchEffect } from 'vue'
+import { useRoute } from 'vue-router';
 // import Player from '@vimeo/player';
 
   export default {
 		setup() {
       const route = useRoute()
-      const router = useRouter()
       const films = inject('films')
       const slugify = inject('slugify')
+      const fetchCurrentCategory = inject('fetchCurrentCategory')
       const fetchedVideos = ref(null)
-      const currentDirector = Object.keys(films.director).find(e => slugify(e) === route.params.directorSlug)
-      const title = ref(null)
 
-      function filterObj(array, value, key) {
-        return array.filter(key ?
-          a => a[key] === value :
-          a => Object.keys(a).some(k => a[k] === value)
-        );
-      }
-
-      onBeforeMount(async () => {
-        if(['Video', 'Director Video'].indexOf(route.name) === -1) return false
-        const filtered = filterObj(await fetchedVideos.value, route.params.slug, 'slug')[0]
-        title.value = route.name === 'Video' ? filtered.title : `${filtered.title} - ${currentDirector}`
-        router.push({ params: { title: title.value }})
-        const el = document.getElementById("vimeoContainer")
-        el.setAttribute('src', `https://player.vimeo.com/video/${filtered.id}`)
+      const page = reactive({
+        currentObj: () => Object.values(fetchedVideos.value).filter((e) => e.slug === route.params.slug),
+        videoURL: computed(() =>`https://player.vimeo.com/video/${page.currentObj()[0].uri}`),
+        title: computed(() => page.director ? `${page.currentObj()[0].name} - ${page.director}` : page.currentObj()[0].name),
+        director: Object.keys(films.director).find(e => slugify(e) === route.params.directorSlug),
+        category: computed(() => page.director ?? route.params.category),
       })
+
+      watchEffect(
+        async () => {
+          await fetchCurrentCategory(page.category, fetchedVideos)
+        }
+      )
 
 			return {
         route,
-        title
+        page
       }
 		}
   }

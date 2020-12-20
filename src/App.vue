@@ -30,7 +30,7 @@ export default {
     watch(
         () => route,
         () => {
-        document.title =  route.params.title ? `${route.params.title} | SKOK Film` : (route.meta.title ? `${route.meta.title} | SKOK Film` : 'SKOK Film')
+        document.title =  route.params.title ? `${route.params.title} | SKOK Film` : (route.name != 'Home' ? `${route.name} | SKOK Film` : 'SKOK Film Production')
     })
   },
 }

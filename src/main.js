@@ -27,14 +27,14 @@ async function fetchData(arr) {
 
 		// Manipulate result
 		Object.values(res.data).forEach((e) => {
-			e.uri = e.uri.split('/').pop()
-			e.pictures.uri = 'https://i.vimeocdn.com/video/' + e.pictures.uri.split('/').pop() + (arr === 'home' ? '_1920x1080.webp' : '_640x360.webp')
-			e.slug = slugify(e.name)
+			e.uri = e.uri.split('/').pop();
+			e.pictures.uri = 'https://i.vimeocdn.com/video/' + e.pictures.uri.split('/').pop() + (arr === 'home' ? '_1920x1080.webp' : '_640x360.webp');
+			e.slug = slugify(e.name);
 		})
-		return res.data
+		return res.data;
 	}
 	catch (e) {
-		console.error(e)
+		console.error(e);
 	}
 }
 

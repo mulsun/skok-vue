@@ -2,14 +2,7 @@
   <div>
     <Nav />
     <router-view v-slot="{ Component }">
-      <transition
-        name="slide"
-        mode="out-in"
-        @beforeLeave="beforeLeave"
-        @enter="enter"
-      >
-        <component :is="Component" />
-      </transition>
+      <component :is="Component" />
     </router-view>
     <Footer />
   </div>

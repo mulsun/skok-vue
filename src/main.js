@@ -41,10 +41,10 @@ async function fetchData(arr) {
 async function fetchCurrentCategory(category, fetchedVideos) {
 	if (sessionStorage.getItem(category) === null) {
 		const data = await fetchData(category)
-		sessionStorage.setItem(category, JSON.stringify(data))
+		sessionStorage.setItem(category, JSON.stringify(data));
 	}
 
-	fetchedVideos.value = JSON.parse(sessionStorage.getItem(category))
+	fetchedVideos.value = JSON.parse(sessionStorage.getItem(category));
 }
 
 window.onload = function () {
@@ -60,8 +60,8 @@ function filterObj(array, value, key) {
 }
 */
 
-const app = createApp(App)
-app.provide('films', films)
-app.provide('slugify', slugify)
-app.provide('fetchCurrentCategory', fetchCurrentCategory)
-app.use(router).mount('#app')
+const app = createApp(App);
+app.provide('films', films);
+app.provide('slugify', slugify);
+app.provide('fetchCurrentCategory', fetchCurrentCategory);
+app.use(router).mount('#app');

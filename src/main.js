@@ -23,7 +23,7 @@ async function fetchData(arr) {
 	const data = films[arr] ?? films.director[arr];
 	try {
 		// Join and fetch vimeo ids
-		const res = await (await fetch(fetchUri(data.map(id => `/videos/${id}`).join(',')))).json()
+		const res = await (await fetch(fetchUri(data.map(id => `/videos/${id}`).join(',')))).json();
 
 		// Manipulate result
 		Object.values(res.data).forEach((e) => {

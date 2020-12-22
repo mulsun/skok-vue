@@ -3,8 +3,10 @@
     <Nav />
     <router-view v-slot="{ Component }">
       <transition
-        name="slide-left"
+        name="slide"
         mode="out-in"
+        @beforeLeave="beforeLeave"
+        @enter="enter"
       >
         <component :is="Component" />
       </transition>
@@ -13,8 +15,7 @@
   </div>
 </template>
 <script>
-import { watch } from 'vue'
-import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 
 import Nav from './components/navigation.vue'
 import Footer from './components/footer.vue'
@@ -25,14 +26,45 @@ export default {
     Nav,
     Footer
   },
-  setup() {
-    const route = useRoute()
-    watch(
-        () => route,
-        () => {
-        document.title =  route.params.title ? `${route.params.title} | SKOK Film` : (route.name != 'Home' ? `${route.name} | SKOK Film` : 'SKOK Film Production')
-    })
+  data() {
+    return {
+      router: useRouter(),
+      prevHeight: 0,
+      transitionName: 'slide',
+     };
   },
+  watch() {
+    () => {
+      // document.title =  this.route.params.title ? `${this.route.params.title} | SKOK Film` : (this.route.name != 'Home' ? `${this.route.name} | SKOK Film` : 'SKOK Film Production')
+    }
+  },
+  created() {
+    this.router.beforeEach((to, from, next) => {
+      let transitionName = to.meta.transitionName || from.meta.transitionName;
+      if (transitionName === 'slide') {
+        const toDepth = to.path.split('/').length;
+        const fromDepth = from.path.split('/').length;
+        transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left';
+      }
+      this.transitionName = transitionName;
+      next();
+    });
+  },
+  methods: {
+    beforeLeave(element) {
+       this.prevHeight = getComputedStyle(element).height;
+    },
+
+    enter(element) {
+      const { height } = getComputedStyle(element);
+
+      element.style.height = this.prevHeight;
+
+      setTimeout(() => {
+        element.style.height = height;
+      });
+    },
+  }
 }
 </script>
 <style lang="postcss">
@@ -130,6 +162,8 @@ a {
 
 /* Common Grid */
 .grid {
+  margin-top: 30px;
+
   & figure {
     padding: 0;
     margin: 0;
@@ -227,7 +261,7 @@ a {
 .slide-right-enter-active,
 .slide-right-leave-active {
   transition-duration: 0.5s;
-  transition-property: opacity, transform;
+  transition-property: height, opacity, transform;
   transition-timing-function: cubic-bezier(0.55, 0, 0.1, 1);
   overflow: hidden;
 
@@ -246,9 +280,5 @@ a {
 .slide-right-enter {
   opacity: 0;
   transform: translate(-2em, 0);
-}
-
-.d-inline-block {
-  display: inline-block;
 }
 </style>

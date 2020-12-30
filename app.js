@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const express = require('express');
 const app = express();
 const { fetchData } = require('./functions');
@@ -8,9 +9,7 @@ const filmsJSON = require('./src/films.json');
 const dotenv = require('dotenv');
 dotenv.config();
 
-// const { createProxyMiddleware } = require('http-proxy-middleware');
-// app.use('/api', createProxyMiddleware({ target: 'http://www.example.org', changeOrigin: true }));
-/*
+
 // Middleware
 app.use('/api/films/:category', async (req, res, next) => {
 	const data = await fetchData(req.params.category);
@@ -18,12 +17,10 @@ app.use('/api/films/:category', async (req, res, next) => {
 	const isSafari = /^((?!chrome|android|crios|fxios).)*safari/i.test(req.get('User-Agent')); // gotta test, could be better
 	res.end(!isSafari ? data.replace(/jpg/g, 'webp') : data);
 });
-*/
 
-app.get('/index.html', async (req, res, next) => {
-	req.url('../dist/index.html');
-});
-
+// Use dist folder
+app.use(express.static(path.join(__dirname, 'dist')));
+console.log(path.join(__dirname, 'dist'));
 // FakeQL
 const DIRECTORS = new Map();
 const FILMS = new Map();
@@ -90,7 +87,7 @@ app.use('/graphql', graphqlHTTP({
 	graphiql: true,
 }));
 
-app.listen(process.env.NODE_ENV === 'dev' ? 80 : 443);
+app.listen(process.env.NODE_ENV === 'dev' ? 3000 : 443);
 
 // Trigger restart on Dreamhost Passenger on push
 fs.writeFileSync(process.cwd() + '/tmp/restart.txt', Date.now(), { flag: 'w' });

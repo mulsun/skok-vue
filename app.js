@@ -84,4 +84,4 @@ app.use('/graphql', graphqlHTTP({
 	graphiql: true,
 }));
 
-app.listen(80);
+app.listen(8080);

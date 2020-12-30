@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-// const { fetchData } = require('./functions');
+const { fetchData } = require('./functions');
 var { graphqlHTTP } = require('express-graphql');
 var { buildSchema } = require('graphql');
 const filmsJSON = require('./src/films.json');
@@ -12,7 +12,7 @@ dotenv.config();
 
 // Middleware
 app.use('/api/films/:category', async (req, res, next) => {
-	const data = 'jpg'; // await fetchData(req.params.category);
+	const data = await fetchData(req.params.category);
 	res.setHeader('Content-Type', 'application/json');
 	const isSafari = /^((?!chrome|android|crios|fxios).)*safari/i.test(req.get('User-Agent')); // gotta test, could be better
 	res.end(!isSafari ? data.replace(/jpg/g, 'webp') : data);

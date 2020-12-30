@@ -6,35 +6,39 @@ dotenv.config();
 
 async function fetchData(category) {
 	const APIKEY = process.env.UNAUTHTOKEN;
-	const vimeoUri = (videoIds) => `https://api.vimeo.com/videos?uris=${videoIds}&access_token=${APIKEY}&fields=uri,name,description,pictures.uri`;
+	const vimeoUri = (videoIds) => `https://api.vimeo.com/videos?uris=${videoIds}&access_token=${APIKEY}&fields=uri,name,description,pictures.sizes`;
 	const categories = [...Object.keys(filmsJSON.films.director), ...Object.keys(filmsJSON.films)].map(e => slugify(e));
-	const fileName = `${process.cwd()}/data/${category}.json`;
-	const imageSize = category === 'home' ? '_1920x1080.webp' : '_640x360.webp';
+	const dataDir = `${process.cwd()}/data`;
+	const fileName = `${dataDir}/${category}.json`;
 	const whichDirector = Object.keys(filmsJSON.films.director).filter((e) => slugify(e) === category);
 	const filmsData = filmsJSON.films[category] != undefined ? filmsJSON.films[category] : filmsJSON.films.director[whichDirector];
 
 	try {
 		if (!categories.includes(category)) throw 'No such category 🤷';
-
+		if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir);
 		// Join and fetch vimeo ids, todo: this could be done in express
 		const res = await (await fetch(vimeoUri(filmsData.map(id => `/videos/${id}`).toString()))).json();
 
-		// Simplify result
+
+		// Simplify the result
 		Object.values(res.data).forEach((e) => {
-			e.uri = e.uri.split('/').pop();
-			//todo: add thumbnail for ll
-			e.image = e.pictures.sizes[0].link.split("?")[0];
-			e.thumbnail = 'https://i.vimeocdn.com/video/' + e.pictures.uri.split('/').pop() + imageSize;
+			e.id = e.uri.split('/').pop();
 			e.slug = slugify(e.name);
+			e.images = {};
+			e.images.thumbnail = e.pictures.sizes[0].link.split("?")[0];
+			e.images.lq = e.pictures.sizes[3].link.split("?")[0];
+			e.images.hq = e.pictures.sizes[5].link.split("?")[0];
+			delete e.pictures;
+			delete e.uri;
 		});
 
 		// Write File, if file exists read from existing
 		if (!fs.existsSync(fileName)) {
-			await fs.writeFileSync(fileName, JSON.stringify(res.data), { flag: 'w' });
+			fs.writeFileSync(fileName, JSON.stringify(res.data), { flag: 'w' });
 		}
 
 		// Read File
-		return await fs.readFileSync(fileName, 'utf8');
+		return fs.readFileSync(fileName, 'utf8');
 	}
 	catch (e) {
 		return e;

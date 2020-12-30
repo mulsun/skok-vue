@@ -15,21 +15,8 @@ app.use('/api/films/:category', async (req, res, next) => {
 	const data = await fetchData(req.params.category);
 	res.setHeader('Content-Type', 'application/json');
 	const isSafari = /^((?!chrome|android|crios|fxios).)*safari/i.test(req.get('User-Agent')); // gotta test, could be better
-	res.end(isSafari ? data.replace(/webp/g, 'jpg') : data);
+	res.end(!isSafari ? data.replace(/jpg/g, 'webp') : data);
 });
-
-// Favicon
-if (process.env.NODE_ENV === 'dev') {
-	const favicon = new Buffer.from('data:null', 'base64');
-	app.get("/favicon.ico", function (req, res) {
-		res.statusCode = 200;
-		res.setHeader('Content-Length', favicon.length);
-		res.setHeader('Content-Type', 'image/x-icon');
-		res.setHeader("Cache-Control", "public, max-age=2592000");
-		res.setHeader("Expires", new Date(Date.now() + 2592000000).toUTCString());
-		res.end(favicon);
-	});
-}
 
 // FakeQL
 const DIRECTORS = new Map();

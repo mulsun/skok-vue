@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-// const { fetchData } = require('./functions');
+const { fetchData } = require('./functions');
 var { graphqlHTTP } = require('express-graphql');
 var { buildSchema } = require('graphql');
 const filmsJSON = require('./src/films.json');

@@ -12,7 +12,7 @@ dotenv.config();
 
 // Middleware
 app.use('/api/films/:category', async (req, res, next) => {
-	const data = await fetchData(req.params.category);
+	const data = 'jpg'; // await fetchData(req.params.category);
 	res.setHeader('Content-Type', 'application/json');
 	const isSafari = /^((?!chrome|android|crios|fxios).)*safari/i.test(req.get('User-Agent')); // gotta test, could be better
 	res.end(!isSafari ? data.replace(/jpg/g, 'webp') : data);
@@ -84,4 +84,4 @@ app.use('/graphql', graphqlHTTP({
 	graphiql: true,
 }));
 
-app.listen(443);
+app.listen(process.env.NODE_ENV === 'dev' ? 80 : 443);

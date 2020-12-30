@@ -19,7 +19,7 @@ app.use('/api/films/:category', async (req, res, next) => {
 	res.end(!isSafari ? data.replace(/jpg/g, 'webp') : data);
 });
 
-app.use('/public/*', async (req, res, next) => {
+app.use('/*', async (req, res, next) => {
 	res.end('mere');
 });
 

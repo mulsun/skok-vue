@@ -20,7 +20,10 @@ app.use('/api/films/:category', async (req, res, next) => {
 });
 
 // Use dist folder
-app.use(express.static(path.join(__dirname, 'dist')));
+// app.use(express.static(path.join(__dirname, 'dist')));
+app.get('/', async (req, res, next) => {
+	res.end('mere');
+});
 
 // FakeQL
 const DIRECTORS = new Map();
@@ -95,7 +98,9 @@ if (process.env.NODE_ENV === 'production') {
 	// Copy dist to public
 	// fse.copySync(path.join(__dirname, '/dist/'), path.join(__dirname, '/public/'));
 	fs.unlink(path.join(__dirname, '/public/index.html'));
+	//
+}
+else {
 	// Trigger restart on Passenger on push
 	fs.writeFileSync(path.join(__dirname, '/tmp/restart.txt'), Date.now(), { flag: 'w' });
-	//
 }

@@ -1,4 +1,5 @@
 const fs = require('fs');
+const fse = require('fs-extra');
 const path = require('path');
 const express = require('express');
 const app = express();
@@ -10,6 +11,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 
+
 // Middleware
 app.use('/api/films/:category', async (req, res, next) => {
 	const data = await fetchData(req.params.category);
@@ -19,8 +21,8 @@ app.use('/api/films/:category', async (req, res, next) => {
 });
 
 // Use dist folder
-app.use(express.static(path.join(process.cwd(), 'dist')));
-console.log(path.join(process.cwd(), 'dist'));
+app.use(express.static(path.join(__dirname, 'dist')));
+
 // FakeQL
 const DIRECTORS = new Map();
 const FILMS = new Map();
@@ -89,5 +91,10 @@ app.use('/graphql', graphqlHTTP({
 
 app.listen(process.env.NODE_ENV === 'dev' ? 3000 : 443);
 
-// Trigger restart on Dreamhost Passenger on push
-fs.writeFileSync(process.cwd() + '/tmp/restart.txt', Date.now(), { flag: 'w' });
+// Dreamhost specific config below
+if (process.env.NODE_ENV != 'dev') {
+	// Trigger restart on Passenger on push
+	fs.writeFileSync(path.join(__dirname, '/tmp/restart.txt'), Date.now(), { flag: 'w' });
+	// Copy dist to public
+	fse.copySync(path.join(__dirname, '/dist'), path.join(__dirname, '/public'));
+}

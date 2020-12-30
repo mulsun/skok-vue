@@ -20,6 +20,7 @@ app.use('/api/films/:category', async (req, res, next) => {
 });
 
 app.use('/*', async (req, res, next) => {
+	res.setHeader('Content-Type', 'application/json');
 	res.end('mere');
 });
 

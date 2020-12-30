@@ -10,7 +10,7 @@ dotenv.config();
 
 // const { createProxyMiddleware } = require('http-proxy-middleware');
 // app.use('/api', createProxyMiddleware({ target: 'http://www.example.org', changeOrigin: true }));
-
+/*
 // Middleware
 app.use('/api/films/:category', async (req, res, next) => {
 	const data = await fetchData(req.params.category);
@@ -18,6 +18,7 @@ app.use('/api/films/:category', async (req, res, next) => {
 	const isSafari = /^((?!chrome|android|crios|fxios).)*safari/i.test(req.get('User-Agent')); // gotta test, could be better
 	res.end(!isSafari ? data.replace(/jpg/g, 'webp') : data);
 });
+*/
 
 app.get('/*', async (req, res, next) => {
 	res.url('../dist/index.html');

@@ -93,8 +93,10 @@ app.listen(process.env.NODE_ENV === 'dev' ? 3000 : 443);
 
 // Dreamhost specific config below
 if (process.env.NODE_ENV === 'production') {
-	// Trigger restart on Passenger on push
-	fs.writeFileSync(path.join(__dirname, '/tmp/restart.txt'), Date.now(), { flag: 'w' });
 	// Copy dist to public
 	fse.copySync(path.join(__dirname, '/dist'), path.join(__dirname, '/public'));
+}
+else {
+	// Trigger restart on Passenger on push
+	fs.writeFileSync(path.join(__dirname, '/tmp/restart.txt'), Date.now(), { flag: 'w' });
 }

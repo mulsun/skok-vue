@@ -20,7 +20,7 @@ app.use('/api/films/:category', async (req, res, next) => {
 
 // Use dist folder
 app.use(express.static(path.join(process.cwd(), 'dist')));
-
+console.log(path.join(process.cwd(), 'dist'));
 // FakeQL
 const DIRECTORS = new Map();
 const FILMS = new Map();

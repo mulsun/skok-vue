@@ -95,6 +95,7 @@ app.listen(process.env.NODE_ENV === 'dev' ? 3000 : 443);
 if (process.env.NODE_ENV === 'production') {
 	// Copy dist to public
 	fse.copySync(path.join(__dirname, '/dist'), path.join(__dirname, '/public'));
+	fs.writeFileSync(path.join(__dirname, '/tmp/whatever.txt'), Date.now(), { flag: 'w' });
 }
 else {
 	// Trigger restart on Passenger on push

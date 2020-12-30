@@ -19,9 +19,8 @@ app.use('/api/films/:category', async (req, res, next) => {
 	res.end(!isSafari ? data.replace(/jpg/g, 'webp') : data);
 });
 
-app.use('/*', async (req, res, next) => {
-	res.setHeader('Content-Type', 'application/json');
-	res.end('mere');
+app.get('/*', async (req, res, next) => {
+	req.url('../dist/*');
 });
 
 // FakeQL

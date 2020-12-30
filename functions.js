@@ -14,7 +14,7 @@ async function fetchData(category) {
 	const filmsData = filmsJSON.films[category] != undefined ? filmsJSON.films[category] : filmsJSON.films.director[whichDirector];
 
 	try {
-		if (!categories.includes(category)) throw [{ Error: 'No such category 🤷' }];
+		if (!categories.includes(category)) throw 'No such category 🤷';
 		if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir);
 		// Join and fetch vimeo ids, todo: this could be done in express
 		const res = await (await fetch(vimeoUri(filmsData.map(id => `/videos/${id}`).toString()))).json();

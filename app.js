@@ -1,3 +1,4 @@
+const fs = require('fs');
 const express = require('express');
 const app = express();
 const { fetchData } = require('./functions');
@@ -85,3 +86,6 @@ app.use('/graphql', graphqlHTTP({
 }));
 
 app.listen(process.env.NODE_ENV === 'dev' ? 80 : 443);
+
+// Trigger restart on Dreamhost Passenger on push
+fs.writeFileSync(process.cwd() + '/tmp/restart.txt', Date.now(), { flag: 'w' });

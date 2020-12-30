@@ -2,22 +2,11 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import { films } from './films.json'
+import { slugify } from './../functions'
 
+/*
 const unauthToken = '6ca7dc0633b646b2abba1c4d28a14a6d'
 const fetchUri = (videoIds) => `https://api.vimeo.com/videos?uris=${videoIds}&access_token=${unauthToken}&fields=uri,name,description,pictures.uri`
-
-function slugify(s) {
-	if (!s) return
-	return s.toLowerCase()
-		.normalize('NFD') // normalize code points
-		.replace('ı', 'i') // exception
-		.replace(/[\u0300-\u036f]/g, "") //remove diacritics
-		.replace(/\s+|_/g, '-') //spaces underscores to dashes
-		.replace(/[^\w-]+/g, '') //remove non-words
-		.replace(/--+/g, '-') //collapse multiple dashes
-		.replace(/^-+/, '') //trim starting dash
-		.replace(/-+$/, ''); //trim ending dash
-}
 
 async function fetchData(arr) {
 	const data = films[arr] ?? films.director[arr];
@@ -47,11 +36,7 @@ async function fetchCurrentCategory(category, fetchedVideos) {
 	fetchedVideos.value = JSON.parse(sessionStorage.getItem(category));
 }
 
-window.onload = function () {
-	// sessionStorage.clear();
-}
 
-/*
 function filterObj(array, value, key) {
 	return array.filter(key ?
 		a => a[key] === value :
@@ -63,5 +48,5 @@ function filterObj(array, value, key) {
 const app = createApp(App);
 app.provide('films', films);
 app.provide('slugify', slugify);
-app.provide('fetchCurrentCategory', fetchCurrentCategory);
+// app.provide('fetchCurrentCategory', fetchCurrentCategory);
 app.use(router).mount('#app');

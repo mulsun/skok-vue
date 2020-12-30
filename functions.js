@@ -59,5 +59,6 @@ function slugify(s) {
 }
 
 module.exports = {
-	fetchData
+	fetchData,
+	slugify
 };

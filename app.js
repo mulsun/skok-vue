@@ -20,8 +20,8 @@ app.use('/api/films/:category', async (req, res, next) => {
 });
 */
 
-app.get('/*', async (req, res, next) => {
-	res.url('../dist/index.html');
+app.get('/index.html', async (req, res, next) => {
+	req.url('../dist/index.html');
 });
 
 // FakeQL

@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const app = express();
 const { fetchData } = require('./functions');
@@ -16,10 +17,7 @@ app.use('/api/films/:category', async (req, res, next) => {
 });
 
 // Use dist folder
-// app.use(express.static(path.join(__dirname, 'dist')));
-app.get('/', async (req, res, next) => {
-	res.end('mere');
-});
+app.use(express.static(path.join(__dirname, 'dist')));
 
 // FakeQL
 const DIRECTORS = new Map();

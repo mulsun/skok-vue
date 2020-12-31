@@ -9,8 +9,6 @@ const filmsJSON = require('./src/films.json');
 const dotenv = require('dotenv');
 dotenv.config();
 
-
-
 // Middleware
 app.use('/api/films/:category', async (req, res, next) => {
 	const data = await fetchData(req.params.category);
@@ -97,9 +95,9 @@ app.listen(process.env.NODE_ENV === 'dev' ? 3000 : 443);
 if (process.env.NODE_ENV === 'production') {
 	// Copy dist to public
 	// fse.copySync(path.join(__dirname, '/dist/'), path.join(__dirname, '/public/'));
-	fs.unlink(path.join(__dirname, '/public/index.html'));
-	//
+	//fs.unlink(path.join(__dirname, '/public/index.html'));
 }
+
 else {
 	// Trigger restart on Passenger on push
 	fs.writeFileSync(path.join(__dirname, '/tmp/restart.txt'), Date.now(), { flag: 'w' });

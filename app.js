@@ -1,5 +1,3 @@
-const fs = require('fs');
-const path = require('path');
 const express = require('express');
 const app = express();
 const { fetchData } = require('./functions');
@@ -89,16 +87,5 @@ app.use('/graphql', graphqlHTTP({
 	graphiql: true,
 }));
 
-app.listen(process.env.NODE_ENV === 'dev' ? 3000 : 443);
-
-// Dreamhost specific config below
-if (process.env.NODE_ENV === 'production') {
-	// Copy dist to public
-	// fse.copySync(path.join(__dirname, '/dist/'), path.join(__dirname, '/public/'));
-	//fs.unlink(path.join(__dirname, '/public/index.html'));
-}
-
-else {
-	// Trigger restart on Passenger on push
-	fs.writeFileSync(path.join(__dirname, '/tmp/restart.txt'), Date.now(), { flag: 'w' });
-}
+// Port is proxied on Dreamhost
+app.listen(8080);

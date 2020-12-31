@@ -8,7 +8,9 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "api": "NODE_ENV=dev nodemon app.js",
-    "clean-data": "rm -rf data/*"
+    "clean-data": "rm -rf data/*",
+    "forever-start": "forever start -a --uid server app.js",
+    "forever-stop": "forever stop server"
   },
   "dependencies": {
     "core-js": "^3.8.1",
@@ -28,10 +30,11 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^6.8.0",
     "eslint-plugin-vue": "^7.2.0",
+    "forever": "^3.0.4",
+    "nodemon": "^2.0.6",
     "postcss": "^8.2.1",
     "postcss-loader": "^4.1.0",
-    "postcss-nesting": "^7.0.1",
-    "nodemon": "^2.0.6"
+    "postcss-nesting": "^7.0.1"
   },
   "eslintConfig": {
     "root": true,

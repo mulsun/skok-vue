@@ -40,24 +40,24 @@ const initializeData = () => {
 initializeData();
 
 var schema = buildSchema(`
-  type Query {
-    films: [Film]
-    film(id: ID): Film
-    directors: [Director]
-    director(id: ID): Director
-  }
+	type Query {
+		films: [Film]
+		film(id: ID): Film
+		directors: [Director]
+		director(id: ID): Director
+	}
 
-  type Film {
-    id: ID
-    films: String
-  }
+	type Film {
+		id: ID
+		films: String
+	}
 
-  type Director {
-    id: ID
-    films: String
-    firstName: String
-    lastName: String
-  }
+	type Director {
+		id: ID
+		films: String
+		firstName: String
+		lastName: String
+	}
 `);
 
 // The root provides a resolver function for each API endpoint
@@ -69,7 +69,7 @@ const rootValue = {
 }
 
 // Middleware
-app.use('/api/films/:category', async (req, res, next) => {
+app.use('/api/films/:category', async (req, res) => {
 	const data = await fetchData(req.params.category);
 	res.setHeader('Content-Type', 'application/json');
 	const isSafari = /^((?!chrome|android|crios|fxios).)*safari/i.test(req.get('User-Agent')); // gotta test, could be better

@@ -4,7 +4,11 @@
 ```
 npm install
 ```
-
+### API
+Run Nodemon for API & graphQL development.
+```
+npm run api
+```
 ### Compiles and hot-reloads for development
 ```
 npm run serve
@@ -18,6 +22,18 @@ npm run build
 ### Lints and fixes files
 ```
 npm run lint
+```
+
+### Forever start / stop
+Start `forever` (for Dreamhost).
+```
+npm run forever-start
+npm run forever-stop
+```
+### Clean Data
+Remove cached data.
+```
+npm run clean-data
 ```
 
 ### Customize configuration

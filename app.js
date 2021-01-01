@@ -8,17 +8,6 @@ const filmsJSON = require('./src/films.json');
 const dotenv = require('dotenv');
 dotenv.config();
 
-// Middleware
-app.use('/api/films/:category', async (req, res, next) => {
-	const data = await fetchData(req.params.category);
-	res.setHeader('Content-Type', 'application/json');
-	const isSafari = /^((?!chrome|android|crios|fxios).)*safari/i.test(req.get('User-Agent')); // gotta test, could be better
-	res.end(!isSafari ? data.replace(/jpg/g, 'webp') : data);
-});
-
-// Use dist folder
-app.use(express.static(path.join(__dirname, 'dist')));
-
 // FakeQL
 const DIRECTORS = new Map();
 const FILMS = new Map();
@@ -79,11 +68,22 @@ const rootValue = {
 	director: ({ id }) => DIRECTORS.get(id)
 }
 
+// Middleware
+app.use('/api/films/:category', async (req, res, next) => {
+	const data = await fetchData(req.params.category);
+	res.setHeader('Content-Type', 'application/json');
+	const isSafari = /^((?!chrome|android|crios|fxios).)*safari/i.test(req.get('User-Agent')); // gotta test, could be better
+	res.end(!isSafari ? data.replace(/jpg/g, 'webp') : data);
+});
+
 app.use('/graphql', graphqlHTTP({
 	schema: schema,
 	rootValue: rootValue,
 	graphiql: true,
 }));
+
+// Use dist folder
+app.use(express.static(path.join(__dirname, 'dist')));
 
 // Port is proxied on Dreamhost
 app.listen(8080);

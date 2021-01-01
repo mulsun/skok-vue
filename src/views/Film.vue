@@ -65,7 +65,7 @@
       const route = useRoute()
       const router = useRouter()
       const slugify = inject('slugify')
-      const fetchCurrentCategory = inject('fetchCurrentCategory')
+      const fetchData = inject('fetchData')
       const fetchedVideos = ref(null)
       const page = reactive({
         title: computed(() => route.name),
@@ -76,7 +76,7 @@
       watchEffect(
         async () => {
           if(filmComponent) {
-            await fetchCurrentCategory(page.director??route.name.toLowerCase(), fetchedVideos)
+            await fetchData(page.director??route.name.toLowerCase(), fetchedVideos)
           }
         }
       )

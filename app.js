@@ -85,5 +85,5 @@ app.use('/graphql', graphqlHTTP({
 // Use dist folder
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// Port is proxied on Dreamhost
-app.listen(8080);
+// Port is proxied on vue-cli and Dreamhost
+app.listen(8000);

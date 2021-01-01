@@ -7,7 +7,7 @@ Run Nodemon for API & graphQL development.
 ```
 npm run api
 ```
-### Compiles and hot-reloads for development
+### Compiles and hot-reloads for Vue development
 ```
 npm run serve
 ```

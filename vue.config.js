@@ -1,8 +1,11 @@
 module.exports = {
 	devServer: {
-		overlay: {
-			warnings: true,
-			errors: true
+		proxy: {
+			'^/api|graphql': {
+				target: 'http://localhost:8000',
+				ws: true,
+				changeOrigin: true
+			},
 		}
 	}
 }

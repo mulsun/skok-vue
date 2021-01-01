@@ -6,15 +6,12 @@ import { slugify } from './../functions'
 
 async function fetchData(category) {
 	try {
-		// Join and fetch vimeo ids
-		const res = await (await fetch(`/api/films/${category}`).json());
-		return res.data;
+		return await (await fetch(`${window.location.origin}/api/films/${category}`)).json();
 	}
 	catch (e) {
 		console.error(e);
 	}
 }
-
 
 /*
 function filterObj(array, value, key) {

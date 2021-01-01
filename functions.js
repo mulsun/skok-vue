@@ -20,15 +20,15 @@ async function fetchData(category) {
 		// Join and fetch vimeo ids, todo: this could be done in express
 		const res = await (await fetch(vimeoUri(filmsData.map(id => `/videos/${id}`).toString()))).json();
 
-
 		// Simplify the result
 		Object.values(res.data).forEach((e) => {
+			const pictureLink = (i) => e.pictures.sizes[i].link.split("?")[0];
 			e.id = e.uri.split('/').pop();
 			e.slug = slugify(e.name);
 			e.images = {};
-			e.images.thumbnail = e.pictures.sizes[0].link.split("?")[0];
-			e.images.lq = e.pictures.sizes[3].link.split("?")[0];
-			e.images.hq = e.pictures.sizes[5].link.split("?")[0];
+			e.images.thumbnail = pictureLink(0);
+			e.images.lq = pictureLink(3);
+			e.images.hq = pictureLink(5);
 			delete e.pictures;
 			delete e.uri;
 		});

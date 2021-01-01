@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <h2
-      :class="$route.name === 'Home' ? 'sr-only' : 'sub'"
+      :class="isHome ? 'sr-only' : 'sub'"
       class="page-title"
     >{{ page.director??page.title }}</h2>
     <div
@@ -19,7 +19,7 @@
         { 
           name: 'Video',
           params: { 
-            vid: video.uri,
+            vid: video.id,
             category: to??$route.name.toLowerCase(),
             title: $route.name,
             slug: slugify(video.name),
@@ -29,7 +29,7 @@
         ">
           <figure>
             <img
-              :src="video.pictures.uri"
+              :src="video.images[isHome ? 'hq' : 'lq']"
               alt=""
               class="thumbnail"
             >
@@ -46,7 +46,7 @@
   </div>
 </template>
 <script>
-  import { ref, reactive, inject, watchEffect, computed } from 'vue'
+  import { ref, reactive, inject, onMounted, onBeforeUnmount } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
   import { films } from '../films.json'
 
@@ -67,30 +67,30 @@
       const slugify = inject('slugify')
       const fetchData = inject('fetchData')
       const fetchedVideos = ref(null)
+      const isHome = route.name === 'Home'
       const page = reactive({
-        title: computed(() => route.name),
-        director: computed(() => Object.keys(films.director).find(e => slugify(e) === route.params.slug)),
+        title: route.name,
+        director: Object.keys(films.director).find(e => slugify(e) === route.params.slug)
       })
-      const filmComponent = Object.keys(films).pop().indexOf(route.name)
 
-      watchEffect(
+      router.afterEach(async() => {
+         fetchedVideos.value = await fetchData(route.params.slug??route.name.toLowerCase())
+      });
+
+      onMounted(
         async () => {
-          if(filmComponent) {
-            await fetchData(page.director??route.name.toLowerCase(), fetchedVideos)
-          }
+          console.log(route)
+          fetchedVideos.value = await fetchData(route.params.slug??route.name.toLowerCase())
         }
       )
 
-      router.beforeEach(() => {
-      });
-
-      router.afterEach(() => {
-      });
+      onBeforeUnmount(() => fetchedVideos.value = null)
 
       return {
         fetchedVideos,
         slugify,
-        page
+        page,
+        isHome
       }
     }
   }

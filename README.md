@@ -1,5 +1,3 @@
-# skok
-
 ## Project setup
 ```
 npm install

@@ -5,12 +5,12 @@
       class="page-title"
     >{{ page.director??page.title }}</h2>
     <div
-      v-if="fetchedVideos"
+      v-if="data"
       class="grid"
       :class="grid ? 'grid-3' : 'grid-1'"
     >
       <div
-        v-for="(video, i) in fetchedVideos"
+        v-for="(video, i) in data"
         :key="i"
         class="film"
         id="video"
@@ -46,8 +46,8 @@
   </div>
 </template>
 <script>
-  import { ref, reactive, inject, onMounted, onBeforeUnmount } from 'vue'
-  import { useRoute, useRouter } from 'vue-router'
+  import { ref, reactive, inject, onBeforeUnmount, watchEffect } from 'vue'
+  import { useRoute } from 'vue-router'
   import { films } from '../films.json'
 
   export default {
@@ -63,31 +63,31 @@
     },
     setup() {
       const route = useRoute()
-      const router = useRouter()
       const slugify = inject('slugify')
       const fetchData = inject('fetchData')
-      const fetchedVideos = ref(null)
+      const data = ref(null)
       const isHome = route.name === 'Home'
+      const getDirector = Object.keys(films.director).find(e => slugify(e) === route.params.slug)
       const page = reactive({
         title: route.name,
-        director: Object.keys(films.director).find(e => slugify(e) === route.params.slug)
+        director: getDirector 
       })
 
-      router.afterEach(async() => {
-         fetchedVideos.value = await fetchData(route.params.slug??route.name.toLowerCase())
-      });
+      watchEffect(async(onInvalidate) => {
+        page.title = route.name
+        page.director = getDirector
+        data.value = await fetchData(route.params.slug??route.name.toLowerCase())
 
-      onMounted(
-        async () => {
-          console.log(route)
-          fetchedVideos.value = await fetchData(route.params.slug??route.name.toLowerCase())
-        }
-      )
+        onInvalidate(() => {
+          data.value = null
+          //
+        })
+      })
 
-      onBeforeUnmount(() => fetchedVideos.value = null)
+      onBeforeUnmount(() => data.value = null)
 
       return {
-        fetchedVideos,
+        data,
         slugify,
         page,
         isHome

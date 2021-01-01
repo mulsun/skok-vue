@@ -210,6 +210,10 @@ a {
   & .thumbnail {
     width: 100%;
     object-fit: cover;
+
+    &.blur {
+      filter: blur(2px);
+    }
   }
 }
 

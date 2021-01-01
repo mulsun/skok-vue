@@ -6,21 +6,14 @@ import { slugify } from './../functions'
 
 async function fetchData(category) {
 	try {
+		const categories = [...Object.keys(films.director), ...Object.keys(films)].map(e => slugify(e));
+		if (!categories.includes(category)) throw 'No such category 🤷';
 		return await (await fetch(`${window.location.origin}/api/films/${category}`)).json();
 	}
 	catch (e) {
 		console.error(e);
 	}
 }
-
-/*
-function filterObj(array, value, key) {
-	return array.filter(key ?
-		a => a[key] === value :
-		a => Object.keys(a).some(k => a[k] === value)
-	);
-}
-*/
 
 const app = createApp(App);
 app.provide('films', films);

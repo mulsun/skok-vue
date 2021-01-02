@@ -46,7 +46,7 @@
   </div>
 </template>
 <script>
-  import { ref, reactive, inject, onBeforeUnmount, watchEffect } from 'vue'
+  import { ref, reactive, inject, watchEffect } from 'vue'
   import { useRoute } from 'vue-router'
   import { films } from '../films.json'
 
@@ -68,23 +68,21 @@
       const data = ref(null)
       const isHome = route.name === 'Home'
       const getDirector = Object.keys(films.director).find(e => slugify(e) === route.params.slug)
-      const page = reactive({
+      let page = reactive({
         title: route.name,
         director: getDirector 
       })
 
-      watchEffect(async(onInvalidate) => {
+
+      watchEffect(async (onInvalidate) => {
         page.title = route.name
         page.director = getDirector
         data.value = await fetchData(route.params.slug??route.name.toLowerCase())
 
         onInvalidate(() => {
-          data.value = null
-          //
+          data.value = false
         })
       })
-
-      onBeforeUnmount(() => data.value = null)
 
       return {
         data,

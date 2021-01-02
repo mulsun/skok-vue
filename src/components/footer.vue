@@ -35,19 +35,6 @@
         <span class="sr-only">Facebook</span>
       </a>
     </li>
-    <li>
-      <a
-        target="blank"
-        href="mailto:hello@skokfilm.com?subject=Hello! 👋"
-        class="msh"
-      >
-        <span class="at">
-          <span class="gg-mail"></span>
-          <span class="sr-only">Mail</span>
-        </span>
-        <span class="hello">hello@skokfilm.com</span>
-      </a>
-    </li>
   </ul>
 </template>
 <script>
@@ -94,33 +81,6 @@ export default {
       }
     }
   }
-
-  & .msh {
-    @media (min-width: 421px) {
-      &:not(:hover):not(:focus) .hello {
-        display: none;
-      }
-
-      &:hover,
-      &:focus {
-        width: 100%;
-
-        & .at {
-          display: none;
-        }
-      }
-    }
-
-    @media (max-width: 420px) {
-      & .hello {
-        display: none;
-      }
-
-      & .at {
-        display: inline-flex;
-      }
-    }
-  }
 }
 
 /* css.gg */
@@ -134,6 +94,7 @@ export default {
   background-color: currentColor;
   padding: 2px;
 }
+
 .gg-facebook::after,
 .gg-facebook::before {
   content: '';
@@ -142,6 +103,7 @@ export default {
   box-sizing: border-box;
   color: #000;
 }
+
 .gg-facebook::before {
   width: 8px;
   height: 20px;
@@ -150,6 +112,7 @@ export default {
   border-top-left-radius: 5px;
   left: 12px;
 }
+
 .gg-facebook::after {
   width: 10px;
   height: 4px;
@@ -158,6 +121,7 @@ export default {
   left: 10px;
   transform: skew(-5deg);
 }
+
 .gg-instagram {
   box-sizing: border-box;
   position: relative;
@@ -170,6 +134,7 @@ export default {
   height: 20px;
   background-color: currentColor;
 }
+
 .gg-instagram::after,
 .gg-instagram::before {
   content: '';
@@ -177,6 +142,7 @@ export default {
   box-sizing: border-box;
   position: absolute;
 }
+
 .gg-instagram::after {
   border: 2px solid #000;
   left: 3px;
@@ -185,6 +151,7 @@ export default {
   border-radius: 100%;
   top: 3px;
 }
+
 .gg-instagram::before {
   border-radius: 3px;
   width: 2px;
@@ -192,30 +159,5 @@ export default {
   background: #000;
   right: 1px;
   top: 1px;
-}
-
-.gg-mail,
-.gg-mail::after {
-  display: block;
-  box-sizing: border-box;
-  height: 20px;
-  border: 2px solid #000;
-}
-.gg-mail {
-  overflow: hidden;
-  transform: scale(var(--ggs, 1));
-  position: relative;
-  width: 24px;
-  border-radius: 2px;
-  background-color: #fff;
-}
-.gg-mail::after {
-  content: '';
-  position: absolute;
-  border-radius: 3px;
-  width: 20px;
-  transform: rotate(-45deg);
-  bottom: 6px;
-  left: 0;
 }
 </style>

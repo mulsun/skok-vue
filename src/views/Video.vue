@@ -3,9 +3,9 @@
     <h2 class="page-title">{{ page.title }}</h2>
     <div id="vimeoContainer">
       <iframe
+        ref="iframe"
         frameborder="0"
         allowFullScreen
-        :src="`https://player.vimeo.com/video/${page.id}`"
       ></iframe>
     </div>
   </div>
@@ -22,23 +22,23 @@ import { useRoute } from 'vue-router';
       const slugify = inject('slugify')
       const fetchData = inject('fetchData')
       const fetchedVideos = ref(null)
+      const iframe = ref(null)
 
       const page = reactive({
-        // currentObj: () => Object.values(fetchedVideos.value).filter((e) => e.slug === route.params.slug),
-        // videoURL: computed(() =>`https://player.vimeo.com/video/${page.currentObj()[0].id}`),
-        // title: computed(() => page.director ? `${page.currentObj()[0].name} - ${page.director}` : page.currentObj()[0].name),
         director: Object.keys(films.director).find(e => slugify(e) === route.params.directorSlug),
-        category: computed(() => page.director ?? route.params.category),
+        category: computed(() => slugify(page.director) ?? route.params.category),
       })
 
       onMounted(async () => {
         fetchedVideos.value = await fetchData(page.category)
         const currentObj = Object.values(fetchedVideos.value).filter((e) => e.slug === route.params.slug);
         page.id = currentObj[0].id;
-        page.title = page.director ? currentObj[0].name + '-' + page.director : currentObj[0].name
+        page.title = `${currentObj[0].name} - ${page.director??'SKOK'}`
+        iframe.value.src = `https://player.vimeo.com/video/${page.id}`
       })
 
 			return {
+        iframe,
         route,
         page
       }

@@ -13,28 +13,36 @@ const DIRECTORS = new Map();
 const FILMS = new Map();
 
 class Film {
-	constructor(data) { Object.assign(this, data) }
-	get director() {
-		return DIRECTORS.get(this.directorId)
+	constructor(data) {
+		Object.assign(this, data)
+	}
+
+	get film() {
+		return FILMS.get(this.id)
 	}
 }
-
 class Director {
-	constructor(data) { Object.assign(this, data) }
+	constructor(data) {
+		Object.assign(this, data)
+	}
+	/*
 	get films() {
 		return [...FILMS.values()].filter(film => film.directorId === this.id)
 	}
+	*/
 }
 
 const initializeData = () => {
-	Object.entries(filmsJSON.films.director).forEach((k, v) => DIRECTORS.set(k, new Director(v)));
+	Object.entries(filmsJSON.films.director).forEach((k, i) => {
+		DIRECTORS.set(i, new Director({ id: i, name: k[0], films: k[1] }))
+	});
 
-	const films = [
-		{ id: '1', directorId: '1', body: 'Hello world' },
-		{ id: '2', directorId: '2', body: 'Hi, planet!' }
-	]
 
-	films.forEach(film => FILMS.set(film.id, new Film(film)))
+	Object.entries(filmsJSON.films).forEach((k, i) => {
+		if (k[0] != 'director') {
+			FILMS.set(i, new Film({ id: i, category: k[0], films: k[1] }))
+		}
+	});
 }
 
 initializeData();
@@ -48,22 +56,22 @@ var schema = buildSchema(`
 	}
 
 	type Film {
-		id: ID
-		films: String
+		id: ID!
+		category: String!
+		films: [String]
 	}
 
 	type Director {
-		id: ID
-		films: String
-		firstName: String
-		lastName: String
+		id: ID!
+		name: String!
+		films: [String]
 	}
 `);
 
 // The root provides a resolver function for each API endpoint
 const rootValue = {
 	films: () => FILMS.values(),
-	film: ({ id }) => FILMS.get(id),
+	film: ({ category }) => FILMS.get(category),
 	directors: () => DIRECTORS.values(),
 	director: ({ id }) => DIRECTORS.get(id)
 }

@@ -22,7 +22,7 @@ const props = defineProps({
   animation: fill v-bind(duration) ease infinite;
   position: absolute;
   z-index: 1;
-  bottom: 0;
+  bottom: 2px;
   left: 0;
   opacity: 0.4;
 }

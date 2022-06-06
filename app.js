@@ -37,14 +37,8 @@ async function fetchData(category) {
 			});
 
 			// sort films
-			res.data.sort((a, b) => {
-				if (category === 'home') {
-					return filmsData.indexOf(a.id) - filmsData.indexOf(b.id);
-				}
-				else {
-					return new Date(b.created_time) - new Date(a.created_time);
-				}
-			});
+			// by date: new Date(b.created_time) - new Date(a.created_time);
+			res.data.sort((a, b) => filmsData.indexOf(a.id) - filmsData.indexOf(b.id));
 			// if file does not exist, save json file
 			fs.writeFileSync(fileName, JSON.stringify(res.data), { flag: 'w' });
 		}
@@ -139,7 +133,7 @@ const rootValue = {
 app.use('/api/films/:category', async (req, res) => {
 	const data = await fetchData(req.params.category);
 	res.setHeader('Content-Type', 'application/json');
-	res.end(data);
+	res.send(data);
 });
 
 app.use('/graphql', graphqlHTTP({

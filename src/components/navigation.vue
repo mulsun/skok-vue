@@ -3,36 +3,19 @@
     <div class="nav-logo">
       <router-link to="/">
         <SiteLogo />
-        <span class="sr-only">SKOK Film</span>
+        <span class="sr-only">{{ $t("nav.logoText") }}</span>
       </router-link>
     </div>
     <button @click="toggleMenu" class="hamburger">
-      <span class="sr-only">Toggle Menu</span><span class="gg-menu" />
+      <span class="sr-only">{{ $t("nav.toggleMenu") }}</span
+      ><span class="gg-menu" />
     </button>
     <ul class="menu" @click.capture="toggleMenu">
       <li class="skip-nav">
-        <a href="#main">Skip Nav</a>
+        <a href="#main">{{ $t("nav.skipNav") }}</a>
       </li>
-      <li>
-        <router-link to="/about">About</router-link>
-      </li>
-      <li>
-        <router-link to="/film">Film</router-link>
-      </li>
-      <li>
-        <router-link to="/directors">Directors</router-link>
-      </li>
-      <li>
-        <router-link to="/animation">Animation</router-link>
-      </li>
-      <li>
-        <router-link to="/interactive">Interactive</router-link>
-      </li>
-      <li>
-        <router-link to="/jobs">Jobs</router-link>
-      </li>
-      <li>
-        <router-link to="/contact">Contact</router-link>
+      <li v-for="item in navItems" :key="item">
+        <router-link :to="`/${item}`">{{ $t(`nav.${item}`) }}</router-link>
       </li>
       <li>
         <SiteFooter />
@@ -41,11 +24,12 @@
   </nav>
 </template>
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, inject } from "vue";
 import SiteLogo from "./logo.vue";
 import SiteFooter from "./footer.vue";
 let isOpen = ref(false);
 let isScrolled = ref(false);
+const navItems = inject("navItems");
 
 function toggleMenu() {
   if (window.innerWidth < 992) {
@@ -70,25 +54,32 @@ nav {
 
   display: flex;
   position: sticky;
+  top: 0;
   z-index: 10;
-  top: var(--padding);
+  top: var(--ws);
 
   @media (--desktop) {
-    &.is-scrolled {
+    &::after {
+      content: "";
+      width: 100%;
+      height: 86px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: transparent;
+      transition: all ease-in 200ms;
+    }
+
+    &.is-scrolled,
+    &:hover {
       & .nav-logo,
       & ul {
         position: relative;
         z-index: 11;
       }
 
-      &:after {
-        content: "";
+      &::after {
         background-color: var(--site-bg);
-        width: 100%;
-        height: 86px;
-        position: fixed;
-        top: 0;
-        left: 0;
       }
     }
   }
@@ -129,7 +120,7 @@ nav {
   }
 
   @media (--mobile) {
-    padding: var(--padding);
+    padding: var(--ws);
     margin-bottom: 0;
     position: relative;
     top: 0;
@@ -166,7 +157,7 @@ nav {
     color: inherit;
     position: absolute;
     top: 18px;
-    right: var(--padding);
+    right: var(--ws);
     background: transparent;
     appearance: none;
     padding: 0;
@@ -193,7 +184,7 @@ nav {
       right: 0;
       width: 100%;
       min-height: 100vh;
-      padding: var(--padding);
+      padding: var(--ws);
       z-index: 8;
       font-size: clamp(1rem, 8vw, 3rem);
     }
@@ -203,7 +194,7 @@ nav {
       color: var(--nav-color);
 
       @media (--desktop) {
-        margin: calc(var(--padding) / 3);
+        margin: calc(var(--ws) / 3);
       }
 
       &.router-link-active,

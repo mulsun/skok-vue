@@ -45,6 +45,7 @@
 <script setup>
 import { ref, inject, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 
 const props = defineProps({
   to: {
@@ -64,6 +65,7 @@ const films = inject("films");
 const findDirector = inject("findDirector");
 const fetchData = inject("fetchData");
 const data = ref(null);
+const { t } = useI18n();
 let title = ref();
 
 if (
@@ -79,9 +81,12 @@ watchEffect(async (onInvalidate) => {
   }); // register cleanup function before Promise resolves
 
   title.value =
-    findDirector(films.director, route.params.directorSlug) ?? route.name;
+    findDirector(films.director, route.params.directorSlug) ??
+    t(`nav.${route.name.toLowerCase()}`);
+
   data.value = await fetchData(
     route.params.directorSlug ?? route.name.toLowerCase()
   );
+  console.log(data.value);
 });
 </script>

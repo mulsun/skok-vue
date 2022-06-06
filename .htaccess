@@ -2,3 +2,6 @@ PassengerNodejs /home/mulsun/.nvm/versions/node/v12.22.8/bin/node
 PassengerStartupFile _passenger.cjs
 PassengerAppRoot /home/mulsun/skokfilm.com/
 PassengerFriendlyErrorPages on
+RewriteEngine On 
+RewriteCond %{HTTPS} off 
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]

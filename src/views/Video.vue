@@ -6,9 +6,9 @@
       :data-vimeo-id="page.id"
     />
     <h1 id="pageTitle" class="page-title">{{ page.name }}</h1>
-    <h2 v-if="page.director">
+    <span class="page-dir-title sr-only" v-if="page.director">
       {{ page.director }}
-    </h2>
+    </span>
     <p class="page-description">{{ page.description }}</p>
   </div>
 </template>
@@ -48,7 +48,6 @@ function createVimeo(id) {
 }
 
 onMounted(async () => {
-  console.log(page.category);
   if (page.category != "reel") {
     await fetchData(page.category)
       .then((e) => {
@@ -77,13 +76,17 @@ onMounted(async () => {
 .video-content {
   & .page-title,
   & .page-description {
-    max-width: 480px;
+    max-width: 500px;
   }
 
   & .page-title {
     text-align: left;
     font-size: 2rem;
     margin: 2rem 0 0.5rem;
+  }
+
+  & .page-dir-title {
+    margin: 0;
   }
 
   & .page-description {

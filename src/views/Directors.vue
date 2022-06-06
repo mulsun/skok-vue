@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <h1 id="pageTitle" class="page-title">Directors</h1>
+    <h1 id="pageTitle" class="page-title">{{ $t("directors.title") }}</h1>
     <ul class="grid-dir">
       <li v-for="(director, i) in directors" :key="i">
         <router-link
@@ -35,11 +35,14 @@ const directorImage = (director) =>
   width: 100%;
   overflow: hidden;
   font-size: 1.5rem;
-  max-width: 50vw;
+
+  display: grid;
 
   @media (--desktop) {
     text-align: center;
-    margin: var(--padding) auto;
+    margin: var(--ws) auto;
+    max-width: 700px;
+    grid-template-columns: 1fr 1fr;
   }
 
   @media (--mobile) {
@@ -52,14 +55,7 @@ const directorImage = (director) =>
 
     @media (--desktop) {
       display: inline;
-      padding: 0 calc(var(--padding) / 4);
-
-      &:after {
-        content: "•";
-        position: relative;
-        left: 3px;
-        top: 1px;
-      }
+      padding: 0 calc(var(--ws) / 4);
     }
 
     & a {

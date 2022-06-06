@@ -8,37 +8,29 @@
     </router-view>
   </main>
   <SiteFooter />
-  <button
-    :title="`Toggle ${lightTheme ? 'Dark' : 'Light'} Theme`"
-    class="toggle-theme"
-    :aria-pressed="lightTheme"
-    @click="lightTheme = !lightTheme"
-  >
-    <span aria-hidden="true">{{ lightTheme ? "🌑" : "🌕" }}</span>
-    <span class="sr-only">{{ lightTheme ? "Light" : "Dark" }} theme</span>
-  </button>
+  <SubFooter />
 </template>
 <script setup>
-import { ref, inject, watch } from "vue";
+import { ref, inject } from "vue";
 import { useRouter } from "vue-router";
 import SiteNav from "./components/navigation.vue";
 import SiteFooter from "./components/footer.vue";
+import SubFooter from "./components/sub-footer.vue";
 
-/* watch() {() => {document.title =  this.route.params.title ? `${this.route.params.title} | SKOK Film` : (this.route.name != 'Home' ? `${this.route.name} | SKOK Film` : 'SKOK Film Production')};},
-function beforeLeave(element) {this.prevHeight = getComputedStyle(element).height;}
-function enter(element) {const { height } = getComputedStyle(element);element.style.height = this.prevHeight;setTimeout(() => {element.style.height = height;});} 
-*/
+const navItems = inject("navItems");
 const films = inject("films");
 const findDirector = inject("findDirector");
 const router = useRouter();
-let transitionName = ref();
-let lightTheme = ref(localStorage.getItem("theme") === "light");
+let transitionName = ref("slide-left");
 
 router.beforeEach((to, from) => {
-  // transitionName.value = to.meta.transitionName || from.meta.transitionName;
-  const toDepth = to.path.split("/").length;
-  const fromDepth = from.path.split("/").length;
-  transitionName.value = toDepth < fromDepth ? "slide-right" : "slide-left";
+  const toDepth = navItems.findIndex((e) => e === to.name?.toLowerCase());
+  const fromDepth = navItems.findIndex((e) => e === from.name?.toLowerCase());
+  transitionName.value = from.name
+    ? toDepth < fromDepth
+      ? "slide-right"
+      : "slide-left"
+    : "none";
 
   // spa a11y
   setTimeout(() => {
@@ -46,7 +38,7 @@ router.beforeEach((to, from) => {
   }, 1000);
 
   if (to.name === "Home") {
-    document.title = "SKOK Film";
+    document.title = "SKOK Film - Creative Production";
   } else if (to.name != "Video") {
     document.title = `${
       findDirector(films.director, to.params.directorSlug) ??
@@ -55,18 +47,6 @@ router.beforeEach((to, from) => {
     } | SKOK Film`;
   }
 });
-
-watch(
-  () => lightTheme.value,
-  () => {
-    localStorage.setItem("theme", lightTheme.value ? "light" : "dark");
-    document.documentElement.setAttribute(
-      "theme",
-      localStorage.getItem("theme")
-    );
-  },
-  { immediate: true }
-);
 </script>
 
 <style lang="postcss">
@@ -81,8 +61,16 @@ watch(
 @custom-media --mobile (max-width: 991px);
 @custom-media --desktop (min-width: 992px);
 
+#main {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 100%;
+  align-items: flex-start;
+  overflow: hidden;
+}
+
 :root {
-  --padding: 30px;
+  --ws: 30px;
   --site-bg: #000;
   --text-color: #fff;
   --logo-color: var(--text-color);
@@ -101,16 +89,8 @@ main:focus {
   outline: none;
 }
 
-.toggle-theme {
-  background: transparent;
-  border: 0;
+button {
   cursor: pointer;
-  margin: 0 var(--padding) var(--padding);
-  padding: 0;
-
-  @media (--desktop) {
-    margin: var(--padding) 0 0 0;
-  }
 }
 
 html {
@@ -127,7 +107,7 @@ body {
   margin: 0;
 
   @media (--desktop) {
-    padding: var(--padding);
+    padding: var(--ws);
   }
 }
 
@@ -165,6 +145,10 @@ a {
   }
 }
 
+.preline {
+  white-space: pre-line;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -183,20 +167,27 @@ a {
 }
 
 .content {
+  min-height: calc(100vh - 208px);
+
   @media (--desktop) {
-    margin-top: var(--padding);
-    min-height: 80vh;
+    margin-top: var(--ws);
+    display: flex;
+    flex-direction: column;
+    place-content: center;
 
     &.content-small {
-      max-width: 420px;
-      margin-left: auto;
-      margin-right: auto;
       text-align: center;
+
+      & p {
+        max-width: 32vw;
+        margin-left: auto;
+        margin-right: auto;
+      }
     }
   }
 
   @media (--mobile) {
-    padding: 0 var(--padding);
+    padding: 0 var(--ws);
     height: auto !important;
   }
 
@@ -209,7 +200,10 @@ a {
 /* Common Grid */
 .grid {
   display: grid;
-  margin-top: var(--padding);
+
+  @media (--desktop) {
+    margin-top: var(--ws);
+  }
 
   & figure {
     padding: 0;
@@ -243,72 +237,12 @@ a {
   }
 }
 
-.grid-home {
-  gap: calc(var(--padding) * 1);
-
-  @media (--desktop) {
-    margin-top: 100vh;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-areas: auto;
-    /*
-    grid-template-areas: 
-      "c0 c0 c0 c0 c0 c0"
-      ". c1 c2 c2 . ."
-      "c3 c4 c4 c4 c4 c4"
-      "c5 c6 . . . ."
-      ". c7 c8 . . ."
-      "c9 c10 c10 c10 c10 c10"
-      "c11 c11 c11 c12 c12 c12"
-      ". c13 . . . ."
-      ". c14 c15 c15 c15 c15"
-      "c16 c17 c18 c18 c18 c18";
-    */
-  }
-
-  & .title {
-    display: block;
-    font-size: clamp(1rem, 18px, 2rem);
-    line-height: 1.2;
-    letter-spacing: -1px;
-  }
-
-  & .film {
-    grid-area: auto !important;
-
-    @media (--mobile) {
-      grid-area: auto !important;
-    }
-
-    @media (--desktop) {
-      min-height: 320px;
-    }
-
-    &:hover {
-      opacity: 0.9;
-    }
-  }
-
-  & .description {
-    display: flex;
-  }
-
-  & .details {
-    width: 100%;
-  }
-
-  & .thumbnail {
-    width: 100%;
-    object-fit: cover;
-    transition: all ease-in 0.25s;
-  }
-}
-
 .grid-3 {
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: calc(var(--padding) * 3) calc(var(--padding) * 2);
+  gap: calc(var(--ws) * 3) calc(var(--ws) * 2);
 
   @media (--mobile) {
-    gap: var(--padding);
+    gap: var(--ws);
   }
 
   & .description {
@@ -329,7 +263,7 @@ a {
 .page-title {
   margin: 0;
   font-size: 6rem;
-  line-height: 0.9;
+  line-height: 1;
   white-space: break-spaces;
 
   @media (--desktop) {
@@ -346,8 +280,8 @@ a {
 .slide-left-leave-active,
 .slide-right-enter-active,
 .slide-right-leave-active {
-  transition-duration: 0.5s;
-  transition-property: height, opacity, transform;
+  transition-duration: 1s;
+  transition-property: all;
   transition-timing-function: cubic-bezier(0.55, 0, 0.1, 1);
   overflow: hidden;
 
@@ -356,15 +290,13 @@ a {
   }
 }
 
-.slide-left-enter,
-.slide-right-leave-active {
-  opacity: 0;
-  transform: translate(5em, 0);
+.slide-left-enter-to,
+.slide-right-enter-to,
+.slide-left-leave-active {
+  transform: translate(-100%, 0);
 }
 
-.slide-left-leave-active,
-.slide-right-enter {
-  opacity: 0;
-  transform: translate(-5em, 0);
+.slide-right-leave-active {
+  transform: translate(100%, 0);
 }
 </style>

@@ -1,0 +1,18 @@
+{
+  "root": true,
+  "extends": [
+    "plugin:vue/base",
+    "plugin:vue/vue3-essential",
+    "eslint:recommended"
+  ],
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 11
+  },
+  "env": {
+    "node": true
+  },
+  "rules": {
+    "strict": 0
+  }
+}

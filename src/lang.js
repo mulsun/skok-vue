@@ -13,6 +13,7 @@ export default {
         interactive: 'Interactive',
         jobs: 'Jobs',
         contact: 'Contact',
+        offlineDirectors: 'Offline Directors',
         skipNav: 'Skip Nav',
         toggleMenu: 'Toggle Menu',
         logoText: 'SKOK Film',
@@ -36,7 +37,8 @@ export default {
         text: 'In SKOK, we are always on the hunt for people who share the same mindset with our company culture. We are open to work and collaborate with all artists and directors all around the world. Please do not hesitate to send your portfolio to us at'
       },
       directors: {
-        title: 'Directors'
+        title: 'Directors',
+        offline: 'Offline'
       },
       about: {
         title: 'About',
@@ -61,6 +63,7 @@ export default {
         interactive: 'İnteraktif',
         jobs: 'Kariyer',
         contact: 'İletişim',
+        offlineDirectors: 'Offline Yönetmenler',
         skipNav: 'Menüyü geç',
         toggleMenu: 'Menüyü aç',
         logoText: 'SKOK Film',

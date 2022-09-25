@@ -11,8 +11,11 @@ function slugify(s) {
 		.replace(/-+$/, ''); //trim ending dash
 }
 
-function findDirector(where, whichDirector) {
-	return Object.keys(where).find((e) => slugify(e) === whichDirector);
+function findDirector(where, whichDirector, isOffline) {
+	const { directors, offlineDirectors } = where;
+	const dirs = directors.find((e) => slugify(e) === whichDirector);
+	const offDirs = offlineDirectors.find(o => slugify(o.name) === whichDirector);
+	return isOffline ? offDirs : dirs || offDirs
 }
 
 const categories = (obj) => [...Object.keys(obj.director), ...Object.keys(obj)].map(e => slugify(e));

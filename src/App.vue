@@ -41,7 +41,8 @@ router.beforeEach((to, from) => {
     document.title = "SKOK Film - Creative Production";
   } else if (to.name != "Video") {
     document.title = `${
-      findDirector(films.director, to.params.directorSlug) ??
+      findDirector(films, to.params.directorSlug)?.name ??
+      findDirector(films, to.params.directorSlug) ??
       to.params.title ??
       to.name
     } | SKOK Film`;

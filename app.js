@@ -9,49 +9,99 @@ import { buildSchema } from 'graphql';
 import { config } from 'dotenv';
 config();
 
+const APIKEY = process.env.UNAUTHTOKEN;
+const vimeoParams = `access_token=${APIKEY}&fields=uri,name,description,pictures.sizes.link,created_time`;
 const { films } = JSON.parse(fs.readFileSync(new URL('./src/films.json', import.meta.url)));
+const fileName = (fn, path = './data/', ext = 'json') => `${new URL(path, import.meta.url).pathname}${fn}.${ext}`;
+const saveData = (data, fn) => fs.writeFileSync(fn, JSON.stringify(data), { flag: 'w' });
+const readFile = (fn) => fs.readFileSync(fn, 'utf8');
+
+function clearData(data) {
+	// Simplify the result
+	Object.values(data).forEach((e) => {
+		e.id = Number(e.uri.split('/').pop());
+		e.slug = slugify(e.name);
+		// e.image = `/images/videos/${e.slug}.avif`;
+		e.image = e.pictures.sizes[0].link.split("_")[0];
+		delete e.pictures;
+		delete e.uri;
+	});
+}
+
+function sortData(data, compareTo, orderBy) {
+	if (orderBy === 'date') {
+		return data.sort((a, b) => new Date(b.created_time) - new Date(a.created_time));
+	}
+	return data.sort((a, b) => compareTo.indexOf(a.id) - compareTo.indexOf(b.id));
+}
+
+async function downloadFile(url, path) {
+	const res = await fetch(url);
+	const fileStream = fs.createWriteStream(path);
+	await new Promise((resolve, reject) => {
+		res.body.pipe(fileStream);
+		res.body.on("error", reject);
+		fileStream.on("finish", resolve);
+	});
+}
 
 async function fetchData(category) {
-	const APIKEY = process.env.UNAUTHTOKEN;
-	const vimeoUri = (videoIds) => `https://api.vimeo.com/videos?uris=${videoIds}&access_token=${APIKEY}&fields=uri,name,description,pictures.sizes,created_time`;
-	const dataDir = new URL('./data/', import.meta.url).pathname;
-	const fileName = `${dataDir}/${category}.json`;
-	const filmsData = films[category] != undefined ? films[category] : films.director[findDirector(films.director, category)];
+	const vimeoUri = (videoIds) => `https://api.vimeo.com/videos?uris=${videoIds}&${vimeoParams}`;
+	const filmsData = films[category] != undefined ? films[category] : films.director[findDirector(films, category)];
+	const file = fileName(category);
 
 	try {
-		if (!categories(films).includes(category)) throw 'No such category 🤷';
-		if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir);
+		if (!categories(films).includes(category)) throw 'No such category to fetch data 🤷';
 
-		if (!fs.existsSync(fileName)) {
+		if (!fs.existsSync(file)) {
 			// Join and fetch vimeo ids, todo: this could be done in express
 			const res = await (await fetch(vimeoUri(filmsData.map(id => `/videos/${id}`).toString()))).json();
-
-			// Simplify the result
-			Object.values(res.data).forEach((e) => {
-				e.id = Number(e.uri.split('/').pop());
-				e.slug = slugify(e.name);
-				// e.image = `/images/videos/${e.slug}.avif`;
-				e.image = e.pictures.sizes[0].link.split("_")[0];
-				delete e.pictures;
-				delete e.uri;
-			});
-
-			// sort films
-			// by date: new Date(b.created_time) - new Date(a.created_time);
-			res.data.sort((a, b) => filmsData.indexOf(a.id) - filmsData.indexOf(b.id));
-			// if file does not exist, save json file
-			fs.writeFileSync(fileName, JSON.stringify(res.data), { flag: 'w' });
+			clearData(res.data);
+			sortData(res.data, filmsData);
+			saveData(res.data, file);
 		}
-		const file = fs.readFileSync(fileName, 'utf8');
-		/*
-		const imagePath = new URL(`./assets/images/videos/`, import.meta.url).pathname;
-		if (!fs.existsSync(imagePath)) fs.mkdirSync(imagePath);
-		JSON.parse(file).forEach(async (e) => {
-			await fetch(e.image).then(res => res.body.pipe(fs.createWriteStream(`${imagePath}/${e.slug}.avif`)));
-		});
-		*/
+
 		// Read File
-		return file;
+		return readFile(file);
+	}
+	catch (e) {
+		return e;
+	}
+}
+
+async function fetchDirector(directorName) {
+	const vimeoDirectorVideosUri = (userId) => `https://api.vimeo.com/users/${userId}/videos?&${vimeoParams}`;
+	const director = findDirector(films, directorName);
+	const file = fileName(directorName);
+
+	try {
+		if (!director) throw 'No such director to fetch data 🤷';
+
+		if (!fs.existsSync(file)) {
+			await fetchDirectorImage(directorName);
+			const res = await (await fetch(vimeoDirectorVideosUri(director.id))).json();
+			clearData(res.data);
+			saveData(res.data, file);
+		}
+		return readFile(file);
+	}
+	catch (e) {
+		return e;
+	}
+}
+
+export default async function fetchDirectorImage(directorName) {
+	const vimeoDirectorUri = (userId) => `https://api.vimeo.com/users/${userId}?access_token=${APIKEY}&fields=pictures.sizes.link`;
+	const director = findDirector(films, directorName);
+	const ext = "jpg";
+	const file = fileName(directorName.split('-').at(-1), './assets/images/directors/offline/', ext);
+
+	try {
+		if (!fs.existsSync(file)) {
+			const resDirector = await (await fetch(vimeoDirectorUri(director.id))).json();
+			const image = resDirector.pictures.sizes[0].link.split('_')[0].concat(`_1000x1000.${ext}`);
+			downloadFile(image, file)
+		}
 	}
 	catch (e) {
 		return e;
@@ -98,7 +148,7 @@ const initializeData = () => {
 
 initializeData();
 
-var schema = buildSchema(`
+const schema = buildSchema(`
 	type Query {
 		films: [Film]
 		film(id: ID): Film
@@ -127,11 +177,16 @@ const rootValue = {
 	director: ({ id }) => DIRECTORS.get(id)
 }
 
-// const isSafari = /^((?!chrome|android|crios|fxios).)*safari/i.test(req.get('User-Agent'));
-
 // Middleware
 app.use('/api/films/:category', async (req, res) => {
-	const data = await fetchData(req.params.category);
+	let data;
+	const isOfflineDirector = films.offlineDirectors.find(o => slugify(o.name) === req.params.category);
+	if (isOfflineDirector) {
+		data = await fetchDirector(req.params.category);
+	}
+	else {
+		data = await fetchData(req.params.category);
+	}
 	res.setHeader('Content-Type', 'application/json');
 	res.send(data);
 });
@@ -150,3 +205,14 @@ app
 	.use(express.static('public'))
 
 app.listen(3000);
+
+/*
+const imagePath = new URL(`./assets/images/videos/`, import.meta.url).pathname;
+if (!fs.existsSync(imagePath)) fs.mkdirSync(imagePath);
+JSON.parse(file).forEach(async (e) => {
+	await fetch(e.image).then(res => res.body.pipe(fs.createWriteStream(`${imagePath}/${e.slug}.avif`)));
+});
+
+// if data/ folder does not exist, create:
+if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir);
+*/

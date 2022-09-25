@@ -1,6 +1,11 @@
 <template>
   <div class="content">
-    <h1 id="pageTitle" class="page-title">{{ $t("directors.title") }}</h1>
+    <h1 id="pageTitle" class="page-title">
+      <span v-if="isOffline">
+        {{ $t("directors.offline") }}
+      </span>
+      {{ $t("directors.title") }}
+    </h1>
     <ul class="grid-dir">
       <li v-for="(director, i) in directors" :key="i">
         <router-link
@@ -23,12 +28,20 @@
 </template>
 <script setup>
 import { inject } from "vue";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
 const films = inject("films");
 const slugify = inject("slugify");
-const directors = films.directors.sort();
+const isOffline = route.name.startsWith("Offline");
+const directors = isOffline
+  ? films.offlineDirectors.map((e) => e.name)
+  : films.directors.sort();
 const directorSlug = (director) => slugify(director);
 const directorImage = (director) =>
-  `images/directors/${slugify(director).split("-").pop()}.jpg`;
+  `/images/directors/${isOffline ? "offline/" : ""}${slugify(director)
+    .split("-")
+    .pop()}.jpg`;
 </script>
 <style lang="postcss">
 .grid-dir {

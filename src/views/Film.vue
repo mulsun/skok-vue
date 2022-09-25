@@ -58,7 +58,6 @@ const props = defineProps({
   },
 });
 
-const slugify = inject("slugify");
 const route = useRoute();
 const router = useRouter();
 const films = inject("films");
@@ -68,10 +67,9 @@ const data = ref(null);
 const { t } = useI18n();
 let title = ref();
 
-if (
-  route.params.directorSlug &&
-  !films.directors.find((e) => slugify(e) === route.params.directorSlug)
-) {
+const currenctDirector = findDirector(films, route.params.directorSlug);
+
+if (route.params.directorSlug && !currenctDirector) {
   router.push("/404");
 }
 
@@ -81,12 +79,12 @@ watchEffect(async (onInvalidate) => {
   }); // register cleanup function before Promise resolves
 
   title.value =
-    findDirector(films.director, route.params.directorSlug) ??
+    currenctDirector?.name ??
+    currenctDirector ??
     t(`nav.${route.name.toLowerCase()}`);
 
   data.value = await fetchData(
     route.params.directorSlug ?? route.name.toLowerCase()
   );
-  console.log(data.value);
 });
 </script>

@@ -1,10 +1,10 @@
 <template>
   <nav :class="{ 'is-open': isOpen, 'is-scrolled': isScrolled }">
     <div class="nav-logo">
-      <router-link to="/">
+      <a href="/">
         <SiteLogo />
         <span class="sr-only">{{ $t("nav.logoText") }}</span>
-      </router-link>
+      </a>
     </div>
     <button @click="toggleMenu" class="hamburger">
       <span class="sr-only">{{ $t("nav.toggleMenu") }}</span
@@ -14,8 +14,15 @@
       <li class="skip-nav">
         <a href="#main">{{ $t("nav.skipNav") }}</a>
       </li>
-      <li v-for="item in navItems" :key="item">
-        <router-link :to="`/${item}`">{{ $t(`nav.${item}`) }}</router-link>
+      <template v-if="!isOfflineDirector">
+        <li v-for="item in navItems" :key="item">
+          <router-link :to="`/${item}`">{{ $t(`nav.${item}`) }}</router-link>
+        </li>
+      </template>
+      <li v-else>
+        <router-link :to="`/offline-directors`">{{
+          $t("nav.offlineDirectors")
+        }}</router-link>
       </li>
       <li>
         <SiteFooter />
@@ -27,9 +34,18 @@
 import { ref, onMounted, inject } from "vue";
 import SiteLogo from "./logo.vue";
 import SiteFooter from "./footer.vue";
+import { useRoute } from "vue-router";
+const route = useRoute();
 let isOpen = ref(false);
 let isScrolled = ref(false);
 const navItems = inject("navItems");
+const findDirector = inject("findDirector");
+const films = inject("films");
+const slug = window.location.pathname.split("/").pop();
+const isOfflineDirector = ref(
+  !!findDirector(films, route.params.directorSlug || slug, true) ||
+    slug === "offline-directors"
+);
 
 function toggleMenu() {
   if (window.innerWidth < 992) {

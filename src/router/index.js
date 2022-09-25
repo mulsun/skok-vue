@@ -44,6 +44,12 @@ export default createRouter({
 		component: Directors,
 	},
 	{
+		path: "/offline-directors",
+		name: "Offline Directors",
+		component: Directors,
+		props: { offline: true }
+	},
+	{
 		path: "/film",
 		name: "Film",
 		component: Film,

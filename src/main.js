@@ -18,9 +18,11 @@ const navItems = [
 
 async function fetchData(category) {
 	try {
-		if (!categories(films).includes(category)) throw 'No such category 🤷🤷🤷';
-		return await fetch(`${window.location.origin}/api/films/${category}`).then(res => res.json());
-		// return import(`./../data/${category}.json`).then(e => e.default);
+		if (categories(films).includes(category) || findDirector(films, category)) {
+			return await fetch(`${window.location.origin}/api/films/${category}`).then(res => res.json());
+			// return import(`./../data/${category}.json`).then(e => e.default);
+		}
+		throw 'No such category in api 🤷🤷🤷';
 	}
 	catch (e) {
 		console.error(e);

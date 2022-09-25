@@ -1,5 +1,71 @@
 {
 	"films": {
+		"offlineDirectors": [
+			{
+				"name": "Egemen Vu",
+				"id": 77099337
+			},
+			{
+				"name": "Barış Berberoğlu",
+				"id": 3260281
+			},
+			{
+				"name": "Barış Kaya",
+				"id": 16062557
+			},
+			{
+				"name": "Ariel Goldenberg",
+				"id": 6355813
+			},
+			{
+				"name": "Ozan Yalabık",
+				"id": 6078364
+			},
+			{
+				"name": "Kübra Ayaz",
+				"id": 81496928
+			},
+			{
+				"name": "Caner Çetiner",
+				"id": 9845023
+			},
+			{
+				"name": "Murat Uğurlu",
+				"id": 35569465
+			},
+			{
+				"name": "Oğuz Uydu",
+				"id": 3231448
+			},
+			{
+				"name": "Dirollers Arts",
+				"id": 42000812
+			},
+			{
+				"name": "Duo Directors",
+				"id": 131913831
+			},
+			{
+				"name": "Mali Arsan",
+				"id": 21219043
+			},
+			{
+				"name": "Emre Tanrıseven",
+				"id": 33203326
+			},
+			{
+				"name": "Sercan Cuhadar",
+				"id": 24471438
+			},
+			{
+				"name": "Toygun Başıdinç",
+				"id": 2099029
+			},
+			{
+				"name": "Ali Özgür Baltaoğlu",
+				"id": 2166828
+			}
+		],
 		"directors": [
 			"Ahmet Zafer Kısacık",
 			"André F. Martins",

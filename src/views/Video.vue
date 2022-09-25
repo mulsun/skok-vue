@@ -23,7 +23,7 @@ const findDirector = inject("findDirector");
 const fetchData = inject("fetchData");
 
 const page = reactive({
-  director: findDirector(films.director, route.params.directorSlug),
+  director: findDirector(films, route.params.directorSlug),
   category:
     route.params.directorSlug != ""
       ? route.params.directorSlug
@@ -62,7 +62,7 @@ onMounted(async () => {
       })
       .catch((e) => {
         // return router.push('/404')
-        console.log(e);
+        return e;
       });
   }
 

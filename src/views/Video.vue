@@ -1,21 +1,25 @@
 <template>
   <div class="content video-content">
-    <div
-      id="vimeoContainer"
-      :style="`background-image:url(${page.image})`"
-      :data-vimeo-id="page.id"
-    />
+    <div id="vimeoContainer" :data-vimeo-id="page.id">
+      <iframe
+        :src="`https://player.vimeo.com/video/${page.id}?title=0&amp;byline=0&amp;portrait=0&amp;amp;playsinline=0&amp;dnt=1`"
+        allowfullscreen
+        :title="page.name"
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+        sandbox="allow-scripts allow-popups"
+      />
+    </div>
     <h1 id="pageTitle" class="page-title">{{ page.name }}</h1>
     <span class="page-dir-title sr-only" v-if="page.director">
       {{ page.director }}
     </span>
-    <p class="page-description">{{ page.description }}</p>
   </div>
 </template>
 <script setup>
 import { reactive, inject, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import Player from "@vimeo/player";
+// import Player from "@vimeo/player";
 
 const route = useRoute();
 const films = inject("films");
@@ -30,6 +34,7 @@ const page = reactive({
       : route.params.category,
 });
 
+/*
 function createVimeo(id) {
   const player = new Player("vimeoContainer", {
     id,
@@ -43,30 +48,28 @@ function createVimeo(id) {
   });
 
   player.on("loaded", () => {
-    document.getElementById("vimeoContainer").removeAttribute("style");
+    const vc = document.getElementById("vimeoContainer");
+    vc.setAttribute("crossorigin", "anonymous");
+    vc.children[0].remove();
   });
 }
+*/
 
 onMounted(async () => {
   if (page.category != "reel") {
     await fetchData(page.category)
-      .then((e) => {
-        return e.find((e) => route.params.slug === e.slug);
-        // compare arrays split(-)   ?? e.find(e => e.slug.startsWith(route.params.slug.split('-',4).join('-')));
-      })
-      .then((e) => {
+      .then((item) => {
+        const e = item.find((item) => route.params.slug === item.slug);
         page.id = e.id;
         page.name = e.name.replace(/( \/ )/, "\n");
         page.image = e.image;
         page.description = e.description;
       })
       .catch((e) => {
-        // return router.push('/404')
         return e;
       });
   }
-
-  createVimeo(page.id || route.params.vid);
+  // createVimeo(page.id || history.state.vid);
   document.title = `${page.name}${
     page.director ? " - " + page.director : ""
   } | SKOK Film`;
@@ -99,15 +102,19 @@ onMounted(async () => {
 }
 
 #vimeoContainer {
+  position: relative;
   aspect-ratio: 16/9;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-color: #000;
   line-height: 0;
+
+  & img {
+    position: absolute;
+    width: 100%;
+  }
 
   & iframe {
     width: 100%;
     height: 100%;
+    border: 0;
 
     &:focus {
       outline: 1px solid var(--site-bg);

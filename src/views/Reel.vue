@@ -9,24 +9,27 @@
           :to="{
             name: 'Video',
             params: {
-              vid: video.id,
               category: $route.name.toLowerCase(),
-              title: $route.name,
               slug: video.id,
               directorSlug: $route.params.directorSlug,
-              vidName: video.name,
+            },
+            state: {
+              vid: video.id,
             },
           }"
         >
           <figure>
-            <img :src="video.image" alt="" class="thumbnail" loading="lazy" />
+            <img
+              crossorigin="anonymous"
+              :src="video.image"
+              alt=""
+              class="thumbnail"
+              loading="lazy"
+            />
           </figure>
           <span class="details">
             <span class="title">
               {{ video.name }}
-            </span>
-            <span v-if="$route.name !== 'Home'" class="description">
-              {{ video.description }}
             </span>
           </span>
         </router-link>
@@ -46,7 +49,7 @@ const vimeoUri = (videoIds, APIKEY) =>
   `https://api.vimeo.com/videos?uris=${videoIds}&access_token=${APIKEY}&fields=uri,name,description,pictures.sizes`;
 
 async function fetchData() {
-  return await fetch(
+  return fetch(
     vimeoUri(
       route.params.ids
         .split(",")

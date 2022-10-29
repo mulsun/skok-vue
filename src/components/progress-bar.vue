@@ -11,6 +11,7 @@ const props = defineProps({
 </script>
 <style lang="postcss">
 .progress-bar {
+  display: none; /* todo */
   width: 100%;
   height: 2px;
   background-size: 200% 100%;

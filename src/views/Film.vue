@@ -17,25 +17,30 @@
           :to="{
             name: 'Video',
             params: {
-              vid: video.id,
               category: to ?? $route.name.toLowerCase(),
-              title: $route.name,
               slug: video.slug,
               directorSlug: $route.params.directorSlug,
+            },
+            state: {
+              vid: video.id,
               vidName: video.name,
+              title: $route.name,
             },
           }"
         >
           <figure>
-            <img :src="video.image" alt="" class="thumbnail" loading="lazy" />
+            <img
+              crossorigin="anonymous"
+              :src="video.image"
+              alt=""
+              class="thumbnail"
+              loading="lazy"
+            />
           </figure>
           <span class="details">
             <span class="title">
               {{ video.name }}
             </span>
-            <span v-if="$route.name !== 'Home'" class="description">{{
-              video.description
-            }}</span>
           </span>
         </router-link>
       </div>
@@ -73,18 +78,23 @@ if (route.params.directorSlug && !currenctDirector) {
   router.push("/404");
 }
 
-watchEffect(async (onInvalidate) => {
-  onInvalidate(() => {
-    data.value = null;
-  }); // register cleanup function before Promise resolves
+watchEffect(
+  async (onInvalidate) => {
+    onInvalidate(async () => {
+      data.value = null;
+    }); // register cleanup function before Promise resolves
 
-  title.value =
-    currenctDirector?.name ??
-    currenctDirector ??
-    t(`nav.${route.name.toLowerCase()}`);
+    title.value =
+      currenctDirector?.name ??
+      currenctDirector ??
+      t(`nav.${route.name.toLowerCase()}`);
 
-  data.value = await fetchData(
-    route.params.directorSlug ?? route.name.toLowerCase()
-  );
-});
+    data.value = await fetchData(
+      route.params.directorSlug ?? route.name.toLowerCase()
+    );
+  },
+  {
+    flush: "post",
+  }
+);
 </script>

@@ -8,6 +8,7 @@
           <li><a href="mailto:sunay@skokfilm.com">Sunay Kahraman</a></li>
           <li><a href="mailto:oktay@skokfilm.com">Oktay Kahraman</a></li>
           <li><a href="mailto:sibel@skokfilm.com">Sibel Bolat</a></li>
+          <li><a href="mailto:hazal@skokfilm.com">Hazal Çağlayan</a></li>
         </ul>
       </div>
       <div>

@@ -11,7 +11,8 @@
         <router-link
           :to="{
             name: 'Director',
-            params: { directorSlug: directorSlug(director), title: director },
+            params: { directorSlug: directorSlug(director) },
+            state: { title: director },
           }"
         >
           {{ director }}

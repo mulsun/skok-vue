@@ -6,6 +6,7 @@ export default {
         changeLanguage: 'Dili Türkçe yap',
       },
       nav: {
+        home: 'SKOK Film',
         about: 'About',
         film: 'Film',
         directors: 'Directors',
@@ -56,6 +57,7 @@ export default {
         changeLanguage: 'Change the language to English',
       },
       nav: {
+        home: 'SKOK Film',
         about: 'Hakkımızda',
         film: 'Film',
         directors: 'Yönetmenler',

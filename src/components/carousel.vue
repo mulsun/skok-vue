@@ -25,6 +25,7 @@
       </h2>
       <iframe
         title="1"
+        crossorigin="anonymous"
         :src="`https://player.vimeo.com/video/${film}?background=1&autoplay=1&loop=1&byline=0&title=0`"
         allowfullscreen
       ></iframe>

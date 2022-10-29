@@ -1,21 +1,20 @@
 <template>
   <div>
-    <Carousel style="display: none" v-if="!isMobile" />
+    <!-- <Carousel style="display: none" v-if="!isMobile" /> -->
     <div class="reel" v-if="!isMobile">
-      <router-link class="reel-title" to="/film/pubg-mobile-ramadan?autoplay">
-        PUBG Mobile<br />Ramadan
+      <router-link class="reel-title" to="/film/lcw-23-nisan?autoplay">
+        LCW<br />23 Nisan
       </router-link>
-      <video
-        id="reel"
-        playsinline
-        muted
-        loop
-        autoplay
-        poster="https://i.vimeocdn.com/video/1127687466-c70a2c92a4dff9e65f9f875b9f1928168179a9b0386019250ab4e5374537ac2d-d"
-      >
+      <!--
+      <video id="reel" playsinline muted loop autoplay crossorigin="anonymous">
         <source src="/videos/reel.mp4" type="video/mp4" />
       </video>
-      <ProgressBar :duration="duration" />
+      -->
+      <iframe
+        title="LCW"
+        src="https://player.vimeo.com/video/820508622?background=1"
+      ></iframe>
+      <ProgressBar :duration="videoDuration" />
     </div>
     <Film class="content-home" grid="home" to="film" />
   </div>
@@ -24,8 +23,9 @@
 import { onMounted, onBeforeUnmount, ref } from "vue";
 import Film from "./Film.vue";
 import ProgressBar from "../components/progress-bar.vue";
-import Carousel from "../components/carousel.vue";
+// import Carousel from "../components/carousel.vue";
 
+const videoDuration = ref();
 const isMobile = ref();
 const observer = new ResizeObserver(([entry]) => {
   isMobile.value = entry.contentRect.width <= 991;
@@ -33,10 +33,9 @@ const observer = new ResizeObserver(([entry]) => {
 
 onMounted(() => {
   observer.observe(document.documentElement);
-  const duration = (document.getElementById("reel").onloadedmetadata =
-    function () {
-      return `${this.duration}s`;
-    });
+  document.getElementById("reel").onloadedmetadata = (event) => {
+    videoDuration.value = `${event.target.duration}s`;
+  };
 });
 
 onBeforeUnmount(() => {
@@ -44,12 +43,6 @@ onBeforeUnmount(() => {
 });
 </script>
 <style lang="postcss">
-.content-home {
-  & .pubg-mobile-ramadan {
-    display: none;
-  }
-}
-
 .grid-home {
   gap: calc(var(--ws) * 1);
 
@@ -88,6 +81,10 @@ onBeforeUnmount(() => {
 
     @media (--desktop) {
       min-height: 320px;
+
+      &:first-child {
+        display: none;
+      }
     }
 
     &:hover {
@@ -126,7 +123,7 @@ onBeforeUnmount(() => {
   & .reel-title {
     @media (--desktop) {
       left: 0;
-      bottom: 0;
+      bottom: var(--ws);
       position: absolute;
       z-index: 3;
       margin: var(--ws);
@@ -138,8 +135,14 @@ onBeforeUnmount(() => {
     color: #fff;
   }
 
-  & video {
+  & video,
+  & iframe {
     width: 100%;
+  }
+
+  & iframe {
+    border: 0;
+    height: 100vh;
   }
 }
 </style>

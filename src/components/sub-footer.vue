@@ -33,10 +33,18 @@ function setLanguage() {
   router.go(0);
 }
 
+const setTheme = (bool) =>
+  localStorage.setItem("theme", bool ? "light" : "dark");
+
 watch(
   () => lightTheme.value,
   () => {
-    localStorage.setItem("theme", lightTheme.value ? "light" : "dark");
+    const isLightMode = window.matchMedia(
+      "(prefers-color-scheme: light)"
+    ).matches;
+
+    setTheme(localStorage.getItem("theme") ? lightTheme.value : isLightMode);
+
     document.documentElement.setAttribute(
       "theme",
       localStorage.getItem("theme")

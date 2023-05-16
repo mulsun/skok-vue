@@ -1,0 +1,8 @@
+version: STSv1
+mode: testing
+mx: ALT1.ASPMX.L.GOOGLE.com
+mx: ASPMX.L.GOOGLE.com
+mx: ALT3.ASPMX.L.GOOGLE.com
+mx: ALT2.ASPMX.L.GOOGLE.com
+mx: ALT4.ASPMX.L.GOOGLE.com
+max_age: 604800

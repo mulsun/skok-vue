@@ -1,13 +1,12 @@
 <template>
   <div class="content video-content">
-    <div id="vimeoContainer" :data-vimeo-id="page.id">
+    <div v-if="page.id" id="vimeoContainer" :data-vimeo-id="page.id">
       <iframe
-        :src="`https://player.vimeo.com/video/${page.id}?title=0&amp;byline=0&amp;portrait=0&amp;amp;playsinline=0&amp;dnt=1`"
+        :src="`https://player.vimeo.com/video/${page.id}?badge=0&amp;autopause=0&amp;title=0&amp;byline=0&amp;portrait=0&amp;amp;playsinline=0&amp;dnt=1&amp;app_id=58479`"
         allowfullscreen
+        frameborder="0"
         :title="page.name"
-        crossorigin="anonymous"
-        referrerpolicy="no-referrer"
-        sandbox="allow-scripts allow-popups"
+        allow="autoplay; fullscreen; picture-in-picture; clipboard-write"
       />
     </div>
     <h1 id="pageTitle" class="page-title">{{ page.name }}</h1>
@@ -18,21 +17,16 @@
 </template>
 <script setup>
 import { reactive, inject, onMounted } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 // import Player from "@vimeo/player";
 
 const route = useRoute();
+const router = useRouter();
 const films = inject("films");
 const findDirector = inject("findDirector");
 const fetchData = inject("fetchData");
 
-const page = reactive({
-  director: findDirector(films, route.params.directorSlug),
-  category:
-    route.params.directorSlug != ""
-      ? route.params.directorSlug
-      : route.params.category,
-});
+const page = reactive({});
 
 /*
 function createVimeo(id) {
@@ -56,23 +50,27 @@ function createVimeo(id) {
 */
 
 onMounted(async () => {
-  if (page.category != "reel") {
-    await fetchData(page.category)
-      .then((item) => {
-        const e = item.find((item) => route.params.slug === item.slug);
-        page.id = e.id;
-        page.name = e.name.replace(/( \/ )/, "\n");
-        page.image = e.image;
-        page.description = e.description;
-      })
-      .catch((e) => {
-        return e;
-      });
-  }
-  // createVimeo(page.id || history.state.vid);
-  document.title = `${page.name}${
-    page.director ? " - " + page.director : ""
-  } | SKOK Film`;
+  router.isReady().then(async () => {
+    const { category, directorSlug } = route.params;
+    if (directorSlug || (category && category != "reel")) {
+      await fetchData(directorSlug || category)
+        .then((item) => {
+          const e = item.find((item) => route.params.slug === item.slug);
+          page.id = e.id;
+          page.name = e.name.replace(/( \/ )/, "\n");
+          page.image = e.image;
+          page.description = e.description;
+          page.director = findDirector(films, directorSlug)?.name;
+        })
+        .catch((e) => {
+          return e;
+        });
+    }
+    // createVimeo(page.id || history.state.vid);
+    document.title = `${page.name}${
+      page.director ? " - " + page.director : ""
+    } | SKOK Film`;
+  });
 });
 </script>
 <style lang="postcss">

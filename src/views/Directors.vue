@@ -57,6 +57,13 @@ if (category) {
     ? filterAndSort(films.offlineDirectors)
     : filterAndSort(films.directors);
 }
+
+if (isOffline) {
+  const meta = document.createElement("meta");
+  meta.name = "robots";
+  meta.content = "noindex";
+  document.head.appendChild(meta);
+}
 </script>
 <style lang="postcss">
 .directors-title {

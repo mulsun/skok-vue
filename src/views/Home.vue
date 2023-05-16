@@ -1,15 +1,9 @@
 <template>
   <div>
-    <!-- <Carousel style="display: none" v-if="!isMobile" /> -->
-    <div class="reel" v-if="!isMobile">
+    <div id="reel" class="reel" v-if="!isMobile">
       <router-link class="reel-title" to="/film/norm-yarinlara-sozumuz-var">
         Norm //<br />Yarınlara sözümüz var
       </router-link>
-      <!--
-      <video id="reel" playsinline muted loop autoplay crossorigin="anonymous">
-        <source src="/videos/reel.mp4" type="video/mp4" />
-      </video>
-      -->
       <iframe
         title="Norm"
         src="https://player.vimeo.com/video/875216845?background=1"
@@ -23,7 +17,6 @@
 import { onMounted, onBeforeUnmount, ref } from "vue";
 import Film from "./Film.vue";
 import ProgressBar from "../components/progress-bar.vue";
-// import Carousel from "../components/carousel.vue";
 
 const videoDuration = ref();
 const isMobile = ref();
@@ -33,9 +26,6 @@ const observer = new ResizeObserver(([entry]) => {
 
 onMounted(() => {
   observer.observe(document.documentElement);
-  document.getElementById("reel").onloadedmetadata = (event) => {
-    videoDuration.value = `${event.target.duration}s`;
-  };
 });
 
 onBeforeUnmount(() => {

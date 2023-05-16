@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /offline-directors/
+Disallow: /directors/
+Disallow: /director/

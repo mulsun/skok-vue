@@ -76,7 +76,6 @@
 
 /* css.gg */
 .gg-facebook {
-  box-sizing: border-box;
   position: relative;
   display: block;
   transform: scale(var(--ggs, 1));
@@ -91,7 +90,6 @@
   content: "";
   display: block;
   position: absolute;
-  box-sizing: border-box;
   color: var(--site-bg);
 }
 
@@ -114,7 +112,6 @@
 }
 
 .gg-instagram {
-  box-sizing: border-box;
   position: relative;
   display: block;
   transform: scale(var(--ggs, 1));
@@ -130,7 +127,6 @@
 .gg-instagram::before {
   content: "";
   display: block;
-  box-sizing: border-box;
   position: absolute;
 }
 

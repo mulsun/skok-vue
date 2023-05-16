@@ -3,14 +3,17 @@ import fs from 'fs';
 import express from 'express';
 const app = express();
 import history from 'connect-history-api-fallback';
-import { graphqlHTTP } from 'express-graphql';
+import { createHandler } from 'graphql-http/lib/use/express';
 import { buildSchema } from 'graphql';
 import { config } from 'dotenv';
+
 config();
 
+const loadJSON = (path) => JSON.parse(fs.readFileSync(new URL(path, import.meta.url)));
 const APIKEY = process.env.UNAUTHTOKEN;
 const vimeoParams = `access_token=${APIKEY}&fields=uri,name,description,pictures.sizes.link,created_time`;
-const { films } = JSON.parse(fs.readFileSync(new URL('./src/films.json', import.meta.url)));
+const { films } = loadJSON('./src/films.json');
+const photos = loadJSON('./src/photos.json');
 const fileName = (fn, path = './data/', ext = 'json') => `${new URL(path, import.meta.url).pathname}${fn}.${ext}`;
 const saveData = (data, fn) => fs.writeFileSync(fn, JSON.stringify(data), { flag: 'w' });
 const readFile = (fn) => fs.readFileSync(fn, 'utf8');
@@ -190,7 +193,14 @@ app.use('/api/films/:category', async (req, res) => {
 	res.send(data);
 });
 
-app.use('/graphql', graphqlHTTP({
+app.use('/api/photos/:category?', async (req, res) => {
+	const isPhotographer = Object.keys(photos).find(o => slugify(o) === req.params.category);
+	const data = isPhotographer ? photos[isPhotographer] : photos;
+	res.setHeader('Content-Type', 'application/json');
+	res.send(data);
+});
+
+app.use('/graphql', createHandler({
 	schema: schema,
 	rootValue: rootValue,
 	graphiql: true,
@@ -202,16 +212,6 @@ app
 		verbose: false
 	}))
 	.use(express.static('public'))
+	.use('/photos', express.static('photos'));
 
 app.listen(3000);
-
-/*
-const imagePath = new URL(`./assets/images/videos/`, import.meta.url).pathname;
-if (!fs.existsSync(imagePath)) fs.mkdirSync(imagePath);
-JSON.parse(file).forEach(async (e) => {
-	await fetch(e.image).then(res => res.body.pipe(fs.createWriteStream(`${imagePath}/${e.slug}.avif`)));
-});
-
-// if data/ folder does not exist, create:
-if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir);
-*/

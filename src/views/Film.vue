@@ -52,7 +52,7 @@ import { ref, inject, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 
-const props = defineProps({
+defineProps({
   to: {
     type: String,
     default: null,

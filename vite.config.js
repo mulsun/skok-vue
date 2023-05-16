@@ -1,12 +1,19 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import postcssPresetEnv from 'postcss-preset-env';
+import postcssGlobalData from '@csstools/postcss-global-data';
+
 // import path from 'path';
 export default defineConfig({
   plugins: [vue()],
   css: {
     postcss: {
-      plugins: [postcssPresetEnv({ stage: 0 })],
+      plugins: [
+        postcssGlobalData({
+          files: ['src/global.css']
+        }),
+        postcssPresetEnv({ stage: 2 })
+      ],
     },
   },
   build: {

@@ -59,9 +59,6 @@ router.beforeEach((to, from) => {
   font-weight: 100 900;
 }
 
-@custom-media --mobile (max-width: 991px);
-@custom-media --desktop (min-width: 992px);
-
 #main {
   display: grid;
   grid-auto-flow: column;
@@ -71,15 +68,20 @@ router.beforeEach((to, from) => {
 }
 
 :root {
+  --dark-color: 11, 11, 11;
+  --light-color: 255, 255, 255;
   --ws: 30px;
-  --site-bg: #000;
-  --text-color: #fff;
+  --site-bg: rgb(var(--dark-color));
+  --text-color: rgb(var(--light-color));
   --logo-color: var(--text-color);
+  --opaque: rgba(var(--light-color), 0.85);
+  --opaque-contrast: rgba(var(--light-color), 0.15);
+  --constant-black: rgb(var(--dark-color));
 }
 
 [theme="light"] {
-  --site-bg: #fff;
-  --text-color: #000;
+  --light-color: 11, 11, 11;
+  --dark-color: 255, 255, 255;
 }
 
 :focus-visible {
@@ -94,7 +96,7 @@ button {
   cursor: pointer;
 }
 
-html {
+* {
   box-sizing: border-box;
 }
 
@@ -105,7 +107,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--site-bg);
   color: var(--text-color);
-  margin: 0;
+  max-width: 1600px;
+  margin: 0 auto;
 
   @media (--desktop) {
     padding: var(--ws);

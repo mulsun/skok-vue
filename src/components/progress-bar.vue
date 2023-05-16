@@ -2,7 +2,7 @@
   <div class="progress-bar" />
 </template>
 <script setup>
-const props = defineProps({
+defineProps({
   duration: {
     type: String,
     default: "30s",

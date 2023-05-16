@@ -18,21 +18,16 @@
 </template>
 <script setup>
 import { reactive, inject, onMounted } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 // import Player from "@vimeo/player";
 
 const route = useRoute();
+const router = useRouter();
 const films = inject("films");
 const findDirector = inject("findDirector");
 const fetchData = inject("fetchData");
 
-const page = reactive({
-  director: findDirector(films, route.params.directorSlug),
-  category:
-    route.params.directorSlug != ""
-      ? route.params.directorSlug
-      : route.params.category,
-});
+const page = reactive({});
 
 /*
 function createVimeo(id) {
@@ -56,23 +51,27 @@ function createVimeo(id) {
 */
 
 onMounted(async () => {
-  if (page.category != "reel") {
-    await fetchData(page.category)
-      .then((item) => {
-        const e = item.find((item) => route.params.slug === item.slug);
-        page.id = e.id;
-        page.name = e.name.replace(/( \/ )/, "\n");
-        page.image = e.image;
-        page.description = e.description;
-      })
-      .catch((e) => {
-        return e;
-      });
-  }
-  // createVimeo(page.id || history.state.vid);
-  document.title = `${page.name}${
-    page.director ? " - " + page.director : ""
-  } | SKOK Film`;
+  router.isReady().then(async () => {
+    const { category, directorSlug } = route.params;
+    if (directorSlug || (category && category != "reel")) {
+      await fetchData(directorSlug || category)
+        .then((item) => {
+          const e = item.find((item) => route.params.slug === item.slug);
+          page.id = e.id;
+          page.name = e.name.replace(/( \/ )/, "\n");
+          page.image = e.image;
+          page.description = e.description;
+          page.director = findDirector(films, directorSlug)?.name;
+        })
+        .catch((e) => {
+          return e;
+        });
+    }
+    // createVimeo(page.id || history.state.vid);
+    document.title = `${page.name}${
+      page.director ? " - " + page.director : ""
+    } | SKOK Film`;
+  });
 });
 </script>
 <style lang="postcss">

@@ -1,8 +1,8 @@
 <template>
   <div class="content">
-    <h1 id="pageTitle" class="page-title">
+    <h1 id="pageTitle" class="page-title directors-title">
       <span v-if="isOffline">
-        {{ $t("directors.offline") }}
+        {{ category || $t("directors.offline") }}
       </span>
       {{ $t("directors.title") }}
     </h1>
@@ -35,16 +35,34 @@ const route = useRoute();
 const films = inject("films");
 const slugify = inject("slugify");
 const isOffline = route.name.startsWith("Offline");
-const directors = isOffline
-  ? films.offlineDirectors.map((e) => e.name)
-  : films.directors.sort();
+const category = route.params?.category;
 const directorSlug = (director) => slugify(director);
 const directorImage = (director) =>
   `/images/directors/${isOffline ? "offline/" : ""}${slugify(director)
     .split("-")
     .pop()}.jpg`;
+
+let directors;
+
+if (category) {
+  const filterByCategory = (arr) =>
+    arr.filter((e) => e.category?.includes(category)).map((e) => e.name);
+  directors = [
+    ...filterByCategory(films.directors),
+    ...filterByCategory(films.offlineDirectors),
+  ].sort();
+} else {
+  const filterAndSort = (arr) => arr.map((e) => e.name).sort();
+  directors = isOffline
+    ? filterAndSort(films.offlineDirectors)
+    : filterAndSort(films.directors);
+}
 </script>
 <style lang="postcss">
+.directors-title {
+  text-transform: capitalize;
+}
+
 .grid-dir {
   width: 100%;
   overflow: hidden;

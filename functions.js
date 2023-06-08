@@ -13,9 +13,8 @@ function slugify(s) {
 
 function findDirector(where, whichDirector, isOffline) {
 	const { directors, offlineDirectors } = where;
-	const dirs = directors.find((e) => slugify(e) === whichDirector);
-	const offDirs = offlineDirectors.find(o => slugify(o.name) === whichDirector);
-	return isOffline ? offDirs : dirs || offDirs
+	const find = arr => arr.find((e) => slugify(e.name) === whichDirector);
+	return isOffline ? find(offlineDirectors) : find(directors) || find(offlineDirectors)
 }
 
 const categories = (obj) => [...Object.keys(obj.director), ...Object.keys(obj)].map(e => slugify(e));

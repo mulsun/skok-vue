@@ -44,7 +44,7 @@ export default createRouter({
 		component: Directors,
 	},
 	{
-		path: "/offline-directors",
+		path: "/offline-directors/:category?",
 		name: "Offline Directors",
 		component: Directors,
 		props: { offline: true }

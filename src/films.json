@@ -2,16 +2,34 @@
 	"films": {
 		"offlineDirectors": [
 			{
+				"name": "Çağlar Mallı",
+				"id": 7731980
+			},
+			{
+				"name": "Aksel Özcan",
+				"id": 11104990
+			},
+			{
+				"name": "Polat Korkmazel",
+				"id": 8857636
+			},
+			{
 				"name": "Egemen Vu",
 				"id": 77099337
 			},
 			{
 				"name": "Barış Berberoğlu",
-				"id": 3260281
+				"id": 3260281,
+				"category": [
+					"bank"
+				]
 			},
 			{
 				"name": "Barış Kaya",
-				"id": 16062557
+				"id": 16062557,
+				"category": [
+					"bank"
+				]
 			},
 			{
 				"name": "Ariel Goldenberg",
@@ -19,15 +37,14 @@
 			},
 			{
 				"name": "Ozan Yalabık",
-				"id": 6078364
+				"id": 6078364,
+				"category": [
+					"bank"
+				]
 			},
 			{
 				"name": "Murat Uğurlu",
 				"id": 35569465
-			},
-			{
-				"name": "Duo Directors",
-				"id": 131913831
 			},
 			{
 				"name": "Mali Arsan",
@@ -43,11 +60,17 @@
 			},
 			{
 				"name": "Toygun Başıdinç",
-				"id": 2099029
+				"id": 2099029,
+				"category": [
+					"bank"
+				]
 			},
 			{
 				"name": "Ali Özgür Baltaoğlu",
-				"id": 2166828
+				"id": 2166828,
+				"category": [
+					"bank"
+				]
 			},
 			{
 				"name": "Ali Ata Akel",
@@ -55,11 +78,17 @@
 			},
 			{
 				"name": "Burcu Matur",
-				"id": 32661248
+				"id": 32661248,
+				"category": [
+					"bank"
+				]
 			},
 			{
 				"name": "Selim Demirdelen",
-				"id": 3977048
+				"id": 3977048,
+				"category": [
+					"bank"
+				]
 			},
 			{
 				"name": "Ahmet Tozar",
@@ -71,7 +100,10 @@
 			},
 			{
 				"name": "Duygu Güzelmeriç",
-				"id": 168558007
+				"id": 168558007,
+				"category": [
+					"bank"
+				]
 			},
 			{
 				"name": "Gülşah Çınar",
@@ -79,26 +111,67 @@
 			},
 			{
 				"name": "Gökdeniz Uslu",
-				"id": 93632325
+				"id": 93632325,
+				"category": [
+					"bank"
+				]
 			}
 		],
 		"directors": [
-			"Ahmet Zafer Kısacık",
-			"André F. Martins",
-			"Demetry Vasilev",
-			"Derhan - Irmak",
-			"Drago Sholev",
-			"DUO",
-			"Eddy Schwartz",
-			"Emil S. Zakhariev",
-			"Emre Başaran",
-			"Görkem Sofuoğlu",
-			"Görkem Yarar",
-			"İlay Alpgiray",
-			"Neda Morfova",
-			"Oğuz Uydu",
-			"Silvyo Behmoaras",
-			"Vural Uzundağ"
+			{
+				"name": "Ahmet Zafer Kısacık"
+			},
+			{
+				"name": "André F. Martins"
+			},
+			{
+				"name": "Demetry Vasilev"
+			},
+			{
+				"name": "Derhan - Irmak"
+			},
+			{
+				"name": "Drago Sholev"
+			},
+			{
+				"name": "Eddy Schwartz"
+			},
+			{
+				"name": "Emil S. Zakhariev"
+			},
+			{
+				"name": "Emre Başaran"
+			},
+			{
+				"name": "Görkem Sofuoğlu"
+			},
+			{
+				"name": "Görkem Yarar"
+			},
+			{
+				"name": "İlay Alpgiray"
+			},
+			{
+				"name": "Neda Morfova"
+			},
+			{
+				"name": "Oğuz Uydu",
+				"category": [
+					"bank"
+				]
+			},
+			{
+				"name": "Silvyo Behmoaras"
+			},
+			{
+				"name": "Vural Uzundağ",
+				"category": [
+					"bank"
+				]
+			},
+			{
+				"name": "Sarp Yaman"
+			}
 		],
 		"reel": [],
 		"home": [
@@ -250,15 +323,6 @@
 				240758827,
 				240755232,
 				240755116
-			],
-			"DUO": [
-				773283067,
-				733605706,
-				518950926,
-				503886637,
-				503887138,
-				512300357,
-				553931991
 			],
 			"Emre Başaran": [
 				684544836,
@@ -520,6 +584,21 @@
 				524933130,
 				262447543,
 				256643610
+			],
+			"Sarp Yaman": [
+				828851105,
+				764243697,
+				756701989,
+				741404441,
+				741137509,
+				706490427,
+				703386570,
+				696127573,
+				696125074,
+				661907553,
+				519115124,
+				519077841,
+				308532197
 			]
 		}
 	}

@@ -1,5 +1,4 @@
 import { slugify, findDirector, categories } from './functions.js'
-import fetch from 'node-fetch';
 import fs from 'fs';
 import express from 'express';
 const app = express();
@@ -47,7 +46,7 @@ async function downloadFile(url, path) {
 
 async function fetchData(category) {
 	const vimeoUri = (videoIds) => `https://api.vimeo.com/videos?uris=${videoIds}&${vimeoParams}`;
-	const filmsData = films[category] != undefined ? films[category] : films.director[findDirector(films, category)];
+	const filmsData = films[category] != undefined ? films[category] : films.director[findDirector(films, category).name];
 	const file = fileName(category);
 
 	try {

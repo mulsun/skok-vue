@@ -3,7 +3,7 @@
 npm install
 ```
 ### API
-Run Nodemon for API & graphQL development.
+Run API development.
 ```
 npm run api
 ```

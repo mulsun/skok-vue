@@ -2,8 +2,8 @@
   <div>
     <!-- <Carousel style="display: none" v-if="!isMobile" /> -->
     <div class="reel" v-if="!isMobile">
-      <router-link class="reel-title" to="/film/lcw-23-nisan?autoplay">
-        LCW<br />23 Nisan
+      <router-link class="reel-title" to="/film/algida-kalpten-kalbe">
+        Algida //<br />Kalpten Kalbe
       </router-link>
       <!--
       <video id="reel" playsinline muted loop autoplay crossorigin="anonymous">
@@ -11,8 +11,8 @@
       </video>
       -->
       <iframe
-        title="LCW"
-        src="https://player.vimeo.com/video/820508622?background=1"
+        title="Algida"
+        src="https://player.vimeo.com/video/843171390?background=1"
       ></iframe>
       <ProgressBar :duration="videoDuration" />
     </div>

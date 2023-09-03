@@ -3,10 +3,15 @@
     <h1 id="pageTitle" class="page-title">{{ $t("contact.title") }}</h1>
     <div class="contact">
       <div>
-        <h2>{{ $t("contact.producers") }}</h2>
+        <h2>{{ $t("contact.executiveProducers") }}</h2>
         <ul>
           <li><a href="mailto:sunay@skokfilm.com">Sunay Kahraman</a></li>
           <li><a href="mailto:oktay@skokfilm.com">Oktay Kahraman</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>{{ $t("contact.producers") }}</h2>
+        <ul>
           <li><a href="mailto:sibel@skokfilm.com">Sibel Bolat</a></li>
           <li><a href="mailto:hazal@skokfilm.com">Hazal Çağlayan</a></li>
         </ul>
@@ -25,10 +30,6 @@
         <span itemprop="telephone">
           <span>{{ $t("contact.tel") }}</span>
           : (+90) 212 924 17 32
-        </span>
-        <span itemprop="telephone">
-          <span>{{ $t("contact.mobile") }}</span>
-          : (+90) 532 605 83 19
         </span>
       </div>
       <div>

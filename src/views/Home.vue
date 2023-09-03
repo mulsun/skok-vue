@@ -81,10 +81,6 @@ onBeforeUnmount(() => {
 
     @media (--desktop) {
       min-height: 320px;
-
-      &:first-child {
-        display: none;
-      }
     }
 
     &:hover {

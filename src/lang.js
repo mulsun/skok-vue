@@ -25,6 +25,7 @@ export default {
       },
       contact: {
         title: 'Contact',
+        executiveProducers: 'Executive Producers',
         producers: 'Producers',
         coProducers: 'Co-Producers',
         tel: 'Tel',

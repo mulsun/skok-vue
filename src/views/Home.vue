@@ -2,8 +2,8 @@
   <div>
     <!-- <Carousel style="display: none" v-if="!isMobile" /> -->
     <div class="reel" v-if="!isMobile">
-      <router-link class="reel-title" to="/film/algida-kalpten-kalbe">
-        Algida //<br />Kalpten Kalbe
+      <router-link class="reel-title" to="/film/norm-yarinlara-sozumuz-var">
+        Norm //<br />Yarınlara sözümüz var
       </router-link>
       <!--
       <video id="reel" playsinline muted loop autoplay crossorigin="anonymous">
@@ -11,8 +11,8 @@
       </video>
       -->
       <iframe
-        title="Algida"
-        src="https://player.vimeo.com/video/843171390?background=1"
+        title="Norm"
+        src="https://player.vimeo.com/video/875216845?background=1"
       ></iframe>
       <ProgressBar :duration="videoDuration" />
     </div>
@@ -81,6 +81,10 @@ onBeforeUnmount(() => {
 
     @media (--desktop) {
       min-height: 320px;
+
+      &:first-child {
+        display: none;
+      }
     }
 
     &:hover {
